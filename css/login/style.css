@@ -1,0 +1,38 @@
+.main-text {
+    text-align: center;
+    margin: 100px auto;
+    color: white;
+    font-size: 54px;
+    font-weight: bold;
+}
+
+.login-form {
+    width: 340px;
+    margin: 0 auto;
+}
+
+.btn-login {
+    background: #E57607;
+    color: white;
+}
+
+/* input style */
+.input-pack .form-control {
+    border-radius: 0;
+    border-top: none;
+    box-shadow: none;
+    line-height: 40px;
+    height: 40px;
+}
+.input-pack .form-control:first-child {
+    border-radius: 4px 4px 0 0;
+}
+.input-pack .form-control:last-child {
+    border-radius: 0 0 4px 4px;
+}
+
+/* form action button */
+.login-form .action-pack .btn {
+    width: 168px;
+    height: 38px;
+}
