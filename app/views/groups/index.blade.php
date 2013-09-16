@@ -14,13 +14,15 @@
         <tr>
             <th>id</th>
             <th>ชื่อกลุ่ม</th>
+            <th>สมาชิกกลุ่ม</th>
             <th>แก้ไข</th>
             <th>ลบ</th>
         </tr>
         @foreach($groups as $group)
         <tr>
-            <td>$group->id</td>
-            <td>$group->name</td>
+            <td>{{ $group->id }}</td>
+            <td>{{ $group->name }}</td>
+            <td>{{ $group->users->length }}</td>
             <td><i class="glyphicon glyphicon-edit"></i></td>
             <td><i class="glyphicon glyphicon-remove"></i></td>
         </tr>

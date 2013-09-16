@@ -32,5 +32,7 @@ Route::post('/', function(){
 
 Route::controller('news', 'NewsController');
 Route::controller('user', 'UserController');
+
+Route::controller('class/{class_id}/group/{group_id}/user', 'ClassesGroupUserController');
+Route::controller('class/{class_id}/group', 'ClassesGroupController');
 Route::controller('class', 'ClassesController');
-Route::any('class/(id)/group', 'ClassesGroupController');
