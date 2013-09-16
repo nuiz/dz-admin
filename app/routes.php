@@ -17,12 +17,20 @@ Route::get('/', function()
 });
 
 Route::post('/', function(){
-    if($_POST['email']=='admin@dz-service.com' && $_POST['password']=='123456'){
-        echo '<script type="text/javascript">window.location.href="user";</script>';
-        exit();
+    $auth = DZApi::instance()->call('post', '/auth', array(
+        'username'=> $_POST['email'],
+        'password'=> $_POST['password']
+    ));
+
+    if(!isset($auth->error)){
+        DZApi::instance()->setUser($auth->user, $auth->token);
+        return Redirect::action('UserController@getIndex');
     }
+
     return View::make('login');
 });
 
 Route::controller('news', 'NewsController');
 Route::controller('user', 'UserController');
+Route::controller('class', 'ClassesController');
+Route::any('class/(id)/group', 'ClassesGroupController');

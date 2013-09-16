@@ -12,7 +12,7 @@ class UserController extends BaseController {
 
     public function getIndex()
     {
-        $this->layout->title = 'test';
+        $this->layout->title = 'User Manager';
         $this->layout->header = 'User Manager';
 
         $users = DZApi::instance()->call('get', '/user');

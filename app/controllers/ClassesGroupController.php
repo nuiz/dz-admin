@@ -7,11 +7,13 @@
  * To change this template use File | Settings | File Templates.
  */
 
-class GroupController extends BaseController {
-    public function getIndex()
+class ClassesGroupController extends BaseController {
+    public function getIndex($class_id)
     {
-        $groups = DZApi::instance()->call('get', '/group');
+        $result = DZApi::instance()->call('get', '/class/'.$class_id.'/group');
+        $groups = $result->data;
 
+        $this->layout->title = 'Group Manager';
         $this->layout->header = 'Group Manager';
         $this->layout->content = View::make('groups/index', array('groups'=> $groups));
     }

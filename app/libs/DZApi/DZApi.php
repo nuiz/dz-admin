@@ -11,7 +11,7 @@ namespace DZApi;
 
 
 class DZApi {
-    protected $host = 'http://localhost:8001';
+    protected $host = 'http://localhost/dz-service';
     protected static $_instance = null;
 
     protected function __construct(){}
@@ -47,9 +47,11 @@ class DZApi {
         // Optional Authentication:
         $header = array();
 
-        // test token
-        $token = "eyJpdiI6IkpYaktYTW9xYXVCUEpPeTE1bVJBcTYreXRCQ3c1OTBERXhPNXhIWHNHbmM9IiwidmFsdWUiOiJ6VGx5bnJoUHlYODlrYUdNTzJQQVE4SmNkTlJYMzd1STh6aXpBQ3pVUEJcLzZNTnUzcDE4SHhcL25iKzExWHpoSHFmOGpwSmd3NFVUVklmTmplVmlIaFdNYjJXbmpXRDlFTDR0Z0pweU9aT1dOZmsybUhCTnk0M2RcL3AzV3daMnZOam8zSFVBdzdzWjU3V2M3WVlUSTNKRXRiVk5rU2NjbldyNzQxMzZQQXV1Rk09IiwibWFjIjoiNmNkY2M5MDhhMTBjOTFjZjk3MTYyYTJhMTM3MjQ1OThiNjQ5NzI3ODU5YjljNDllY2ZkMWI0MTViNDA2NDQ5NSJ9";
-        $header[] = "X-Auth-Token: ".$token;
+        // token
+        $token = (\Session::has('token'))? \Session::get('token'): false;
+        if($token)
+            $header[] = "X-Auth-Token: ".$token;
+
         curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
         //curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 
@@ -59,5 +61,57 @@ class DZApi {
         $response = curl_exec($curl);
 
         return json_decode($response);
+    }
+
+    public function setUser($user, $token)
+    {
+        \Session::put('DZApi.user', $user);
+        \Session::put('DZApi.token', $token);
+    }
+
+    public function getUser()
+    {
+        return \Session::get('DZApi.user');
+    }
+
+    public function getToken()
+    {
+        return \Session::get('DZApi.token');
+    }
+
+    public function arrayToObject($d) {
+        if (is_array($d)) {
+            /*
+            * Return array converted to object
+            * Using __FUNCTION__ (Magic constant)
+            * for recursive call
+            */
+            return (object) array_map(__FUNCTION__, $d);
+        }
+        else {
+            // Return object
+            return $d;
+        }
+    }
+
+    public function objectToArray($d) {
+        if (is_object($d)) {
+            // Gets the properties of the given object
+            // with get_object_vars function
+            $d = get_object_vars($d);
+        }
+
+        if (is_array($d)) {
+            /*
+            * Return array converted to object
+            * Using __FUNCTION__ (Magic constant)
+            * for recursive call
+            */
+            return array_map(__FUNCTION__, $d);
+        }
+        else {
+            // Return array
+            return $d;
+        }
     }
 }

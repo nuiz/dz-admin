@@ -10,11 +10,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>@title</title>
+    <title>admin - {{ $title }}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="{{ URL::asset('css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -25,12 +25,12 @@
     <!-- <script src="//code.jquery.com/jquery.js"></script> -->
     <!-- Include all compiled plugins (below), or include individual files as needed -->
 
-    <script type="text/javascript" src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{{ URL::asset('js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ URL::asset('js/bootstrap.min.js') }}"></script>
     <![endif]-->
 
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <!--<link rel="stylesheet" type="text/css" href="css/jquery.mobile.min.css">-->
+    <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/style.css') }}">
+    <!--<link rel="stylesheet" type="text/css" href="{{ URL::asset('css/jquery.mobile.min.css') }}>-->
 </head>
 <body>
 
@@ -42,12 +42,12 @@
         @yield('content')
     </div>
     <div class="main-nav">
-        <a class="mainnav-btn" href="<?php echo URL::to('/news');?>">news</a>
-        <a class="mainnav-btn" href="<?php echo URL::to('/showcase');?>">showcase</a>
-        <a class="mainnav-btn" href="<?php echo URL::to('/lesson');?>">lesson</a>
-        <a class="mainnav-btn" href="<?php echo URL::to('/activity');?>">activity</a>
-        <a class="mainnav-btn" href="<?php echo URL::to('/user');?>">user</a>
-        <a class="mainnav-btn" href="<?php echo URL::to('/group');?>">group</a>
+        <a class="mainnav-btn" href="<?php echo URL::to('news');?>">news</a>
+        <a class="mainnav-btn" href="<?php echo URL::to('showcase');?>">showcase</a>
+        <a class="mainnav-btn" href="<?php echo URL::to('lesson');?>">lesson</a>
+        <a class="mainnav-btn" href="<?php echo URL::to('activity');?>">activity</a>
+        <a class="mainnav-btn" href="<?php echo URL::to('user');?>">user</a>
+        <a class="mainnav-btn" href="<?php echo URL::to('class');?>">class & group</a>
     </div>
 </div>
 <script type="text/javascript">
@@ -60,33 +60,7 @@ $(function(){
     }
     setBodySize();
 
-    window.onorientationchange = function(){
-
-        setBodySize();
-        /*
-        var orientation = window.orientation;
-
-        // Look at the value of window.orientation:
-
-        if (orientation === 0){
-            setBodySize();
-        }
-
-        else if (orientation === 90){
-
-            // iPad is in Landscape mode. The screen is turned to the left.
-            setBodySize();
-        }
-
-
-        else if (orientation === -90){
-
-            // iPad is in Landscape mode. The screen is turned to the right.
-            setBodySize();
-        }
-        */
-
-    }
+    window.onorientationchange = setBodySize();
 });
 </script>
 </body>
