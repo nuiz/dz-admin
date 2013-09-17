@@ -28,6 +28,9 @@ class DZApi {
         $method = strtolower($method);
         $curl = curl_init();
 
+        $header = array();
+        $data_string = http_build_query($data);
+
         switch ($method)
         {
             case "post":
@@ -36,16 +39,27 @@ class DZApi {
                 if (!is_null($data))
                     curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
                 break;
+
             case "put":
                 curl_setopt($curl, CURLOPT_PUT, 1);
+
+                if(!is_null($data)){
+                    $header[] = "Content-Type: application/x-www-form-urlencoded";
+                    curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
+                }
                 break;
+
+            case "delete":
+                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "DELETE");
+                break;
+
             default:
                 if (!is_null($data))
                     $url = sprintf("%s?%s", $url, http_build_query($data));
+                break;
         }
 
         // Optional Authentication:
-        $header = array();
 
         // token
         $token = (\Session::has('token'))? \Session::get('token'): false;

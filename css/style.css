@@ -43,3 +43,15 @@ body {
 .main-body {
     overflow: scroll;
 }
+
+
+/* tool table-dz */
+.table-dz {
+
+}
+
+.table-dz th {
+    text-align: center;
+    background: #FFEC62;
+    font-weight: normal;
+}

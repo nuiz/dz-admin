@@ -11,7 +11,7 @@ class ClassesController extends BaseController {
     public function getIndex()
     {
         $this->layout->title = 'Class';
-        $this->layout->header = 'Class';
+        $this->layout->header = View::make('classes/header');
 
         $classes = DZApi::instance()->call('get', '/class');
         $this->layout->content = View::make('classes/index', array('classes'=> $classes->data));
@@ -20,8 +20,8 @@ class ClassesController extends BaseController {
     public function getCreate()
     {
         $this->layout->title = 'Create Class';
-        $this->layout->header = View::make('classes/header');
-        $this->layout->content = View::make('classes/create');
+        $this->layout->header = 'Create Class';
+        $this->layout->content = View::make('classes/create/index');
     }
 
     public function postCreate()
@@ -37,6 +37,12 @@ class ClassesController extends BaseController {
         $this->layout->title = 'Create Class';
         $this->layout->header = View::make('classes/header');
 
-        $this->layout->content = View::make('classes/create', $variables);
+        $this->layout->content = View::make('classes/create/index', $variables);
+    }
+
+    public function getDelete()
+    {
+        $response = DZApi::instance()->call('delete', "class/".Input::get('id'));
+        return Response::json($response);
     }
 }

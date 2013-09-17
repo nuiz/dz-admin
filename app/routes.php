@@ -30,6 +30,8 @@ Route::post('/', function(){
     return View::make('login');
 });
 
+Route::controller('test', 'TestController');
+
 Route::controller('news', 'NewsController');
 Route::controller('user', 'UserController');
 
