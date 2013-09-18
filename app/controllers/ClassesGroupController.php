@@ -15,13 +15,31 @@ class ClassesGroupController extends BaseController {
         $groups = $result->data;
 
         $this->layout->title = 'Group Manager';
-        $this->layout->header = 'Group Manager';
-        $this->layout->content = View::make('classes/groups/index', array('classed'=> $classed,'groups'=> $groups));
+        $this->layout->header = View::make('classes/groups/header', array('classed'=> $classed));
+        $this->layout->content = View::make('classes/groups/index', array('classed'=> $classed, 'groups'=> $groups));
     }
 
     public function getDelete($class_id)
     {
         $response = DZApi::instance()->call('delete', "/class/{$class_id}/group/".Input::get('id'));
         return Response::json($response);
+    }
+
+    public function getCreate($class_id)
+    {
+        $classed = DZApi::instance()->call('get', '/class/'.$class_id);
+
+        $this->layout->title = 'Create Group';
+        $this->layout->header = 'Create Group';
+        $this->layout->content = View::make('classes/groups/create/index', array('classed'=> $classed));
+    }
+
+    public function postCreate($class_id)
+    {
+        $response = DZApi::instance()->call("post", "/class/{$class_id}/group", $_POST);
+        if(!isset($response->error))
+        {
+            return Redirect::to("class/{$class_id}/group");
+        }
     }
 }

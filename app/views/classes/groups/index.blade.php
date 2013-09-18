@@ -22,7 +22,7 @@
         <tr>
             <td>{{ $group->id }}</td>
             <td>{{ $group->name }}</td>
-            <td>{{ $group->users->length }}</td>
+            <td><a href="{{ URL::to('class/'.$classed->id.'/group/'.$group->id.'/user') }}">{{ $group->users->length }} คน</a></td>
             <td class="text-center"><a class="edit-group-button" href="{{ URL::to('class/'.$classed->id.'/group/'.$group->id.'/edit') }}"><i class="glyphicon glyphicon-edit"></i></a></td>
             <td class="text-center"><a class="delete-group-button": href="{{ URL::to('class/'.$classed->id.'/group/delete?id='.$group->id) }}"><i class="glyphicon glyphicon-remove"></i></a></td>
         </tr>

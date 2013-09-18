@@ -10,9 +10,44 @@
 class ClassesGroupUserController extends BaseController {
     public function getIndex($class_id, $group_id)
     {
+        $classed = DZApi::instance()->call('get', "/class/{$class_id}");
+        $group = DZApi::instance()->call('get', "/class/{$class_id}/group/{$group_id}");
+
         $result = DZApi::instance()->call('get', "/class/{$class_id}/group/{$group_id}/user");
+
         $this->layout->title = 'Class >> Group >> User';
-        $this->layout->header = 'Class >> Group >> User';
-        $this->layout->content = View::make('classes/groups/users/index', array('users'=> $result->data));
+        $this->layout->header = View::make('classes/groups/users/header', array('classed'=> $classed, 'group'=> $group));
+        $this->layout->content = View::make('classes/groups/users/index', array(
+            'users'=> $result->data,
+            'classed'=> $classed,
+            'group'=> $group
+        ));
+    }
+
+    public function getImport($class_id, $group_id)
+    {
+        $classed = DZApi::instance()->call('get', "/class/{$class_id}");
+        $group = DZApi::instance()->call('get', "/class/{$class_id}/group/{$group_id}");
+
+        $this->layout->title = 'Class >> Group >> User::Import user';
+        $this->layout->header = 'Class >> Group >> User::Import user';
+
+        $users = DZApi::instance()->call('get', "/class/{$class_id}/group/{$group_id}/user", array("import"=> "false"));
+        $this->layout->content = View::make('classes/groups/users/imports/index', array(
+            'users'=> $users->data,
+            'classed'=> $classed,
+            'group'=> $group
+        ));
+    }
+
+    public function postImport($class_id, $group_id, $user_id)
+    {
+        $response = DZApi::instance()->call('post', "class/{$class_id}/group/{$group_id}/user/", array('user_id'=> $user_id));
+        return Response::json($response);
+    }
+
+    public function deleteImport($class_id, $group_id, $user_id)
+    {
+
     }
 }

@@ -48,6 +48,9 @@ class DZApi {
                 break;
 
             case "delete":
+                if(!is_null($data))
+                    $url = sprintf("%s?%s", $url, http_build_query($data));
+
                 $httpFul = \Httpful\Request::delete($this->host.$url);
                 break;
 
