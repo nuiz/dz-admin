@@ -27,6 +27,7 @@
 
     <script type="text/javascript" src="{{ URL::asset('js/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ URL::asset('js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ URL::asset('js/DZApi.js') }}"></script>
     <![endif]-->
 
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/style.css') }}">

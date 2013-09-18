@@ -5,7 +5,8 @@
 	"license": "MIT",
 	"require": {
 		"laravel/framework": "4.0.*",
-		"laravel/curl": "dev-master"
+		"laravel/curl": "dev-master",
+		"nategood/httpful": "0.2.10"
 	},
 	"autoload": {
 		"classmap": [

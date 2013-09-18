@@ -10,6 +10,10 @@
 namespace DZApi;
 
 
+use Httpful\Http;
+use Httpful\Mime;
+use Illuminate\Http\Request;
+
 class DZApi {
     protected $host = 'http://localhost/dz-service';
     protected static $_instance = null;
@@ -25,54 +29,38 @@ class DZApi {
 
     public function call($method, $url, $data=null)
     {
-        $method = strtolower($method);
-        $curl = curl_init();
-
         $header = array();
-        $data_string = http_build_query($data);
+        $method = strtolower($method);
+
+        // if have token
+        $token = (\Session::has('token'))? \Session::get('token'): false;
+        if($token)
+            $header["X-Auth-Token"] = $token;
 
         switch ($method)
         {
             case "post":
-                curl_setopt($curl, CURLOPT_POST, 1);
-
-                if (!is_null($data))
-                    curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+                $httpFul = \Httpful\Request::post($this->host.$url, $data, \Httpful\Mime::FORM);
                 break;
 
             case "put":
-                curl_setopt($curl, CURLOPT_PUT, 1);
-
-                if(!is_null($data)){
-                    $header[] = "Content-Type: application/x-www-form-urlencoded";
-                    curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
-                }
+                $httpFul = \Httpful\Request::put($this->host.$url, $data, \Httpful\Mime::FORM);
                 break;
 
             case "delete":
-                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "DELETE");
+                $httpFul = \Httpful\Request::delete($this->host.$url);
                 break;
 
             default:
                 if (!is_null($data))
                     $url = sprintf("%s?%s", $url, http_build_query($data));
+
+                $httpFul = \Httpful\Request::get($this->host.$url);
                 break;
         }
 
-        // Optional Authentication:
-
-        // token
-        $token = (\Session::has('token'))? \Session::get('token'): false;
-        if($token)
-            $header[] = "X-Auth-Token: ".$token;
-
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
-        //curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-
-        curl_setopt($curl, CURLOPT_URL, $this->host.$url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-
-        $response = curl_exec($curl);
+        $httpFul->addHeaders($header);
+        $response = $httpFul->send();
 
         return json_decode($response);
     }

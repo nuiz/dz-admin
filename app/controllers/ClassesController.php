@@ -42,7 +42,7 @@ class ClassesController extends BaseController {
 
     public function getDelete()
     {
-        $response = DZApi::instance()->call('delete', "class/".Input::get('id'));
+        $response = DZApi::instance()->call('delete', "/class/".Input::get('id'));
         return Response::json($response);
     }
 }
