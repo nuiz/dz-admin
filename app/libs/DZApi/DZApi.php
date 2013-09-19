@@ -16,6 +16,8 @@ use Illuminate\Http\Request;
 
 class DZApi {
     protected $host = 'http://localhost/dz-service';
+    protected $xdebug_session = false;
+    protected $last_response = null;
     protected static $_instance = null;
 
     protected function __construct(){}
@@ -33,7 +35,7 @@ class DZApi {
         $method = strtolower($method);
 
         // if have token
-        $token = (\Session::has('token'))? \Session::get('token'): false;
+        $token = $this->getToken();
         if($token)
             $header["X-Auth-Token"] = $token;
 
@@ -62,10 +64,25 @@ class DZApi {
                 break;
         }
 
+        if($this->xdebug_session!=false)
+        {
+            $header['Cookie'] = "XDEBUG_SESSION=".$this->xdebug_session;
+        }
         $httpFul->addHeaders($header);
-        $response = $httpFul->send();
+        $this->last_response = $response = $httpFul->send();
 
         return json_decode($response);
+    }
+
+    public function get_last_response()
+    {
+        return $this->last_response;
+    }
+
+    public function setXDebugSession($xdebug_session)
+    {
+        // PHPSTORM_DZ_SERVICE
+        $this->xdebug_session = $xdebug_session;
     }
 
     public function setUser($user, $token)

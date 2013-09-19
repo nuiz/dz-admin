@@ -30,12 +30,11 @@
     <div class="main-text">DANCEZONE</div>
     <form role="form" method="post" class="login-form">
         <div class="form-group input-pack">
-            <input class="form-control" type="text" name="email" placeholder="E-mail">
+            <input class="form-control" type="email" name="email" placeholder="E-mail">
             <input class="form-control" type="password" name="password" placeholder="Password">
         </div>
         <div class="form-group action-pack">
             <button class="btn btn-login">Login</button>
-            <button class="btn btn-success">Signup</button>
         </div>
     </form>
 </div>

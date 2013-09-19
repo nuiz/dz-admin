@@ -8,7 +8,7 @@
 var dzApi = (function($){
     function dzApi(){}
 
-    dzApi.host = 'http://localhost:8001';
+    dzApi.prototype.host = '';
     dzApi.prototype.call = function(option){
 
         var ajaxOption = {};

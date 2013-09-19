@@ -19,19 +19,20 @@
 </style>
 <form class="create-form" method="post">
     <legend>Create Group</legend>
-    <p>
-        <label>group name</label>
-        <input type="text" class="input-block-level" name="name" value="@if(@$name) {{ $name }} @endif">
-    </p>
-    <p>
-        <label>description</label>
-        <input type="text" class="input-block-level" name="description" value="@if(@$description) {{ $description }} @endif">
-    </p>
-    <p class="text-center">
-        <button class="btn btn-primary" type="submit">Submit</button>
-    </p>
-    @if(@$error)
-    <p class="alert alert-danger" style="margin-top: 20px;">{{ $error }}</p>
-    @endif
+
+        <p>
+            <label>group name</label>
+            <input type="text" class="input-block-level" name="name" value="@if(@$post['name']) {{ $post['name'] }} @endif">
+        </p>
+        <p>
+            <label>description</label>
+            <input type="text" class="input-block-level" name="description" value="@if(@$post['description']) {{ $post['description'] }} @endif">
+        </p>
+        <p class="text-center">
+            <button class="btn btn-primary" type="submit">Submit</button>
+        </p>
+        @if(@$error)
+        <p class="alert alert-danger" style="margin-top: 20px;">{{ $error }}</p>
+        @endif
 </form>
 @stop

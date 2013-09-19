@@ -16,47 +16,58 @@
             <td>{{ $user->first_name }}</td>
             <td>{{ $user->last_name }}</td>
             <td>{{ $user->email }}</td>
-            <td>
+            <td field_name="type">
                 {{ $user->type }}
                 @if($user->type == 'normal')
-                    <span class="upgrade-button"><i class="glyphicon glyphicon-circle-arrow-up"></i></span>
+                    <a class="glyphicon glyphicon-circle-arrow-up upgrade-button" href="{{ URL::to('user/upgrade/'.$user->id) }}"></a>
                 @endif
             </td>
-            <td><a href="" rel="id_1"><i class="glyphicon glyphicon-edit"></i></a></td>
-            <td><a href="" rel="id_1"><i class="glyphicon glyphicon-remove"></i></a></td>
+            <td><a href="" class="glyphicon glyphicon-edit"></a></td>
+            <td><a href="{{ URL::to('user/delete/'.$user->id) }}" class="glyphicon glyphicon-remove"></a></td>
         </tr>
         @endforeach
     </table>
 </div>
 
 <script type="text/javascript">
-(function($) {
-    var IS_IOS = /iphone|ipad/i.test(navigator.userAgent);
-    $.fn.nodoubletapzoom = function() {
-        if (IS_IOS)
-            $(this).bind('touchstart', function preventZoom(e) {
-                var t2 = e.timeStamp
-                    , t1 = $(this).data('lastTouch') || t2
-                    , dt = t2 - t1
-                    , fingers = e.originalEvent.touches.length;
-                $(this).data('lastTouch', t2);
-                if (!dt || dt > 500 || fingers > 1) return; // not double-tap
-
-                e.preventDefault(); // double tap - prevent the zoom
-                // also synthesize click events we just swallowed up
-                $(this).trigger('click').trigger('click');
-            });
-    };
-})(jQuery);
-
 $(function(){
-    $('.upgrade-button').bind('touchstart', function(e){
+    function disabledTr(tr){
+        $(tr).css({ opacity: 0.4 });
+        $(tr).data('disabled', true);
+    }
+
+    function enabledTr(tr)
+    {
+        $(tr).css({ opacity: 1 });
+        $(tr).data('disabled', false);
+    }
+
+    $('.upgrade-button').bind('touchstart click', function(e){
+        e.preventDefault();
+
+        var tr = $(this).closest('tr');
+        if(tr.data('disabled')==true)
+            return;
+
+        if(!window.confirm('Are you sure?')){
+            return;
+        }
+        disabledTr(tr);
+
+        var href = $(this).attr('href');
         dzApi.call({
-            method: 'put',
-            url: '/user/'+3,
+            method: 'post',
+            url: href,
             data: { type: 'member' },
             success: function(data){
-                alert(data);
+                if(typeof data.error != 'undefined'){
+                    enabledTr(tr);
+                    alert(data.error.message);
+                    return;
+                }
+
+                enabledTr(tr);
+                tr.find('td[field_name="type"]').text(data.type);
             }
         });
     });

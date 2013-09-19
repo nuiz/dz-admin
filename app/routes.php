@@ -17,6 +17,7 @@ Route::get('/', function()
 });
 
 Route::post('/', function(){
+    //DZApi::instance()->setXDebugSession('PHPSTORM_DZ_SERVICE');
     $auth = DZApi::instance()->call('post', '/auth', array(
         'username'=> $_POST['email'],
         'password'=> $_POST['password']
