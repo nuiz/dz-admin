@@ -22,8 +22,8 @@
                     <a class="glyphicon glyphicon-circle-arrow-up upgrade-button" href="{{ URL::to('user/upgrade/'.$user->id) }}"></a>
                 @endif
             </td>
-            <td><a href="" class="glyphicon glyphicon-edit"></a></td>
-            <td><a href="{{ URL::to('user/delete/'.$user->id) }}" class="glyphicon glyphicon-remove"></a></td>
+            <td><a href="" class="glyphicon glyphicon-edit edit-button"></a></td>
+            <td><a href="{{ URL::to('user/delete/'.$user->id) }}" class="glyphicon glyphicon-remove remove-button"></a></td>
         </tr>
         @endforeach
     </table>
@@ -68,6 +68,36 @@ $(function(){
 
                 enabledTr(tr);
                 tr.find('td[field_name="type"]').text(data.type);
+            }
+        });
+    });
+
+    $('.remove-button').bind('touchstart click', function(e){
+        e.preventDefault();
+
+        var tr = $(this).closest('tr');
+        if(tr.data('disabled')==true)
+            return;
+
+        if(!window.confirm('Are you sure?')){
+            return;
+        }
+        disabledTr(tr);
+
+        var href = $(this).attr('href');
+        dzApi.call({
+            method: 'get',
+            url: href,
+            success: function(data){
+                if(typeof data.error != 'undefined'){
+                    enabledTr(tr);
+                    alert(data.error.message);
+                    return;
+                }
+
+                tr.fadeOut(function(){
+                    tr.remove();
+                });
             }
         });
     });

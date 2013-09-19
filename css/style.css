@@ -55,3 +55,12 @@ body {
     background: #FFEC62;
     font-weight: normal;
 }
+
+/* icon style */
+a.glyphicon {
+    color: black;
+}
+
+i.glyphicon {
+    color: inherit;
+}
