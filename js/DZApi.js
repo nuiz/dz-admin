@@ -17,8 +17,11 @@ var dzApi = (function($){
         ajaxOption.type = option.method;
         ajaxOption.url = this.host+option.url;
 
-        if(typeof option.data != 'undefined')
+        if(typeof option.success != 'undefined')
             ajaxOption.success = option.success;
+
+        if(typeof option.data != 'undefined')
+            ajaxOption.data = option.data;
 
         if(typeof option.authToken != 'undefined'){
             header.token = option.authToken;

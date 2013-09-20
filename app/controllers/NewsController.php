@@ -13,6 +13,7 @@ class NewsController extends BaseController {
         $this->layout->title = "News";
         $this->layout->header = View::make('news/header');
 
+        DZApi::instance()->setXDebugSession('PHPSTORM_DZ_SERVICE');
         $news = DZApi::instance()->call('get', '/news');
         $this->layout->content = View::make('news/index', array('news'=> $news->data));
     }
@@ -29,7 +30,6 @@ class NewsController extends BaseController {
         $upload = null;
         $realpath = '';
         try {
-            DZApi::instance()->setXDebugSession('PHPSTORM_DZ_SERVICE');
             if(Input::hasFile('picture')){
                 $picture = Input::file('picture');
                 $upload_name = str_replace('.', '', microtime(true)).'.'.$picture->getClientOriginalExtension();
@@ -57,5 +57,13 @@ class NewsController extends BaseController {
             @unlink('upload_tmp/'.$upload_name);
             throw $e;
         }
+    }
+
+    public function getDelete($id)
+    {
+        DZApi::instance()->setXDebugSession('PHPSTORM_DZ_SERVICE');
+        $news = DZApi::instance()->call('delete', '/news/'.$id);
+
+        return Response::json($news);
     }
 }

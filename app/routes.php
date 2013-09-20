@@ -36,6 +36,8 @@ Route::controller('test', 'TestController');
 Route::controller('news', 'NewsController');
 Route::controller('user', 'UserController');
 
+Route::controller('showcase', 'ShowcaseController');
+
 Route::controller('class/{class_id}/group/{group_id}/user', 'ClassesGroupUserController');
 Route::controller('class/{class_id}/group', 'ClassesGroupController');
 Route::controller('class', 'ClassesController');

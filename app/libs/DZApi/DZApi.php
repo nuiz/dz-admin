@@ -68,8 +68,9 @@ class DZApi {
                 break;
         }
 
-        if($this->xdebug_session!=false)
+        if($this->xdebug_session!=false || true)
         {
+            $this->xdebug_session = 'PHPSTORM_DZ_SERVICE';
             $header['Cookie'] = "XDEBUG_SESSION=".$this->xdebug_session;
         }
         $httpFul->addHeaders($header);
