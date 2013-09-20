@@ -29,7 +29,7 @@ class DZApi {
         return self::$_instance;
     }
 
-    public function call($method, $url, $data=null)
+    public function call($method, $url, $data=null, $files=null)
     {
         $header = array();
         $method = strtolower($method);
@@ -42,7 +42,11 @@ class DZApi {
         switch ($method)
         {
             case "post":
-                $httpFul = \Httpful\Request::post($this->host.$url, $data, \Httpful\Mime::FORM);
+                $httpFul = \Httpful\Request::post($this->host.$url, $data, \Httpful\Mime::UPLOAD);
+                if(!is_null($files)){
+                    //$httpFul->sendsType(\Httpful\Mime::UPLOAD);
+                    $httpFul->attach($files);
+                }
                 break;
 
             case "put":

@@ -17,15 +17,11 @@
     padding: 20px;
 }
 </style>
-<form class="create-form" method="post">
+<form class="create-form" method="post" enctype="multipart/form-data">
     <legend>Create News</legend>
     <div class="form-group">
         <label>news name</label>
-        <input type="text" class="form-control" name="name" value="@if(@$attr['name']) {{ $attr['name'] }} @endif">
-    </div>
-    <div class="form-group">
-        <label>description</label>
-        <input type="text" class="form-control" name="description" value="@if(@$attr['description']) {{ $attr['description'] }} @endif">
+        <input type="text" class="form-control" name="name" value="@if(@$attr['name']){{ $attr['name'] }}@endif">
     </div>
     <div class="form-group">
         <label>แนบไฟล์</label>
@@ -33,7 +29,7 @@
     </div>
     <div class="form-group">
         <label>message</label>
-        <textarea class="form-control" name="message">@if(@$attr['message']) {{ $attr['message'] }} @endif</textarea>
+        <textarea class="form-control" name="message">@if(@$attr['message']){{ $attr['message'] }}@endif</textarea>
     </div>
     <button class="btn btn-primary" type="submit">Submit</button>
     @if(@$error)

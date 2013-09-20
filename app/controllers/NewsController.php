@@ -26,12 +26,36 @@ class NewsController extends BaseController {
 
     public function postCreate()
     {
-        $res = DZApi::instance()->call('post', '/news', Input::all());
-        if(!isset($res->error)){
-            return Redirect::to('news');
+        $upload = null;
+        $realpath = '';
+        try {
+            DZApi::instance()->setXDebugSession('PHPSTORM_DZ_SERVICE');
+            if(Input::hasFile('picture')){
+                $picture = Input::file('picture');
+                $upload_name = str_replace('.', '', microtime(true)).'.'.$picture->getClientOriginalExtension();
+                $picture->move('upload_tmp', $upload_name);
+                $realpath = realpath('upload_tmp/'.$upload_name);
+                $upload = array('picture'=> $realpath);
+                chmod('upload_tmp/'.$upload_name, 0777);
+            }
+            $post = Input::all();
+            if(isset($post['picture'])){
+                unset($post['picture']);
+            }
+            $res = DZApi::instance()->call('post', '/news', $post, $upload);
+            if(!is_null($upload)){
+                @unlink($realpath);
+            }
+            if(!isset($res->error)){
+                return Redirect::to('news');
+            }
+            $this->layout->title = 'Create news';
+            $this->layout->header = 'Create news';
+            $this->layout->content = View::make('news/create/index', array('attr'=> $post, 'error'=> $res->error->message));
         }
-        $this->layout->title = 'Create news';
-        $this->layout->header = 'Create news';
-        $this->layout->content = View::make('news/create/index', array('attr'=> Input::all()));
+        catch (Exception $e) {
+            @unlink('upload_tmp/'.$upload_name);
+            throw $e;
+        }
     }
 }
