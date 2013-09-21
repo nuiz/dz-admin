@@ -27,7 +27,7 @@
                 <a href="{{ $new->picture->link }}" class="glyphicon glyphicon-picture"></a>
                 @endif
             </td>
-            <td>{{ $new->message }}</td>
+            <td>{{ nl2br($new->message) }}</td>
             <td><a class="glyphicon glyphicon-edit" href="{{ URL::to('news/'.$new->id.'/edit') }}"></a></td>
             <td><a class="glyphicon glyphicon-remove action-remove" href="{{ URL::to('news/delete/'.$new->id) }}"></a></td>
         </tr>

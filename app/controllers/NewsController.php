@@ -54,7 +54,8 @@ class NewsController extends BaseController {
             $this->layout->content = View::make('news/create/index', array('attr'=> $post, 'error'=> $res->error->message));
         }
         catch (Exception $e) {
-            @unlink('upload_tmp/'.$upload_name);
+            if(isset($upload_name))
+                @unlink('upload_tmp/'.$upload_name);
             throw $e;
         }
     }

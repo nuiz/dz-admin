@@ -38,6 +38,12 @@ Route::controller('user', 'UserController');
 
 Route::controller('showcase', 'ShowcaseController');
 
+Route::controller('lesson/{lesson_id}/chapter/{chapter_id}/video', 'LessonChapterVideoController');
+Route::controller('lesson/{lesson_id}/chapter', 'LessonChapterController');
+Route::controller('lesson', 'LessonController');
+
 Route::controller('class/{class_id}/group/{group_id}/user', 'ClassesGroupUserController');
 Route::controller('class/{class_id}/group', 'ClassesGroupController');
 Route::controller('class', 'ClassesController');
+
+Route::controller('activity', 'ActivityController');
