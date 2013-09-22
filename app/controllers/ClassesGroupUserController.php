@@ -13,7 +13,7 @@ class ClassesGroupUserController extends BaseController {
         $classed = DZApi::instance()->call('get', "/class/{$class_id}");
         $group = DZApi::instance()->call('get', "/class/{$class_id}/group/{$group_id}");
 
-        $result = DZApi::instance()->call('get', "/class/{$class_id}/group/{$group_id}/user");
+        $result = DZApi::instance()->call('get', "/class/{$class_id}/group/{$group_id}/user", array('import'=> "false"));
 
         $this->layout->title = 'Class >> Group >> User';
         $this->layout->header = View::make('classes/groups/users/header', array('classed'=> $classed, 'group'=> $group));
