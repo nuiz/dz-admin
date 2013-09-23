@@ -15,7 +15,7 @@ use Httpful\Mime;
 use Illuminate\Http\Request;
 
 class DZApi {
-    protected $host = 'http://localhost/dz-service';
+    protected $host = 'http://localhost/api';
     protected $xdebug_session = false;
     protected $last_response = null;
     protected static $_instance = null;
@@ -68,11 +68,13 @@ class DZApi {
                 break;
         }
 
+        /*
         if($this->xdebug_session!=false || true)
         {
             $this->xdebug_session = 'PHPSTORM_DZ_SERVICE';
             $header['Cookie'] = "XDEBUG_SESSION=".$this->xdebug_session;
         }
+        */
         $httpFul->addHeaders($header);
         $this->last_response = $response = $httpFul->send();
 
