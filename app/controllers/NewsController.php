@@ -30,17 +30,17 @@ class NewsController extends BaseController {
         $upload = null;
         $realpath = '';
         try {
-            if(Input::hasFile('picture')){
-                $picture = Input::file('picture');
-                $upload_name = str_replace('.', '', microtime(true)).'.'.$picture->getClientOriginalExtension();
-                $picture->move('upload_tmp', $upload_name);
+            if(Input::hasFile('media')){
+                $media = Input::file('media');
+                $upload_name = str_replace('.', '', microtime(true)).'.'.$media->getClientOriginalExtension();
+                $media->move('upload_tmp', $upload_name);
                 $realpath = realpath('upload_tmp/'.$upload_name);
-                $upload = array('picture'=> $realpath);
+                $upload = array('media'=> $realpath);
                 chmod('upload_tmp/'.$upload_name, 0777);
             }
             $post = Input::all();
-            if(isset($post['picture'])){
-                unset($post['picture']);
+            if(isset($post['media'])){
+                unset($post['media']);
             }
             $res = DZApi::instance()->call('post', '/news', $post, $upload);
             if(!is_null($upload)){

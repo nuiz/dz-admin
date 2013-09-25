@@ -50,6 +50,10 @@ class ClassesGroupController extends BaseController {
 
     public function getEdit($class_id, $group_id)
     {
-        return $class_id."/".$group_id;
+        $this->layout->title = 'Edit Group';
+        $this->layout->header = 'Edit Group';
+
+        $group = DZApi::instance()->call('get', "/class/{$class_id}/group/{$group_id}");
+        $this->layout->content = View::make('classes/groups/create/index', array('post'=> $group));
     }
 }
