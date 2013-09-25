@@ -11,6 +11,16 @@
 |
 */
 
+App::missing(function($exception)
+{
+    return Response::view('errors.missing', array(), 404);
+});
+
+App::error(function(\OAuthException $e){
+    DZApi::instance()->clearUser();
+    return Redirect::to('/');
+});
+
 Route::get('/', function()
 {
 	return View::make('login');

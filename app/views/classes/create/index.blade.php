@@ -18,9 +18,9 @@
 }
 </style>
 <form class="create-form" method="post">
-    <legend>Create Class</legend>
+    <legend>{{ $headForm }}</legend>
     <label>class name</label>
-    <input type="text" name="name" value="@if(@$name) {{ $name }} @endif">
+    <input type="text" name="name" value="@if(@$post->name){{ $post->name }}@endif">
     <button class="btn btn-primary" type="submit">Submit</button>
     @if(@$error)
     <p class="alert alert-danger" style="margin-top: 20px;">{{ $error }}</p>

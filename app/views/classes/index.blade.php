@@ -22,7 +22,7 @@
             <td>{{ $class->id }}</td>
             <td>{{ $class->name }}</td>
             <td><a href="{{ URL::to('class/'.$class->id.'/group') }}">{{ $class->groups->length }} กลุ่ม</a></td>
-            <td class="text-center"><a href=""><i class="glyphicon glyphicon-edit"></i></a></td>
+            <td class="text-center"><a href="{{ URL::to('class/edit/'.$class->id) }}"><i class="glyphicon glyphicon-edit"></i></a></td>
             <td class="text-center"><a href="{{ URL::to('class/delete?id='.$class->id) }}" class="del-button"><i class="glyphicon glyphicon-remove"></i></a></td>
         </tr>
         @endforeach

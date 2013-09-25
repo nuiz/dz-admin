@@ -39,6 +39,9 @@ body {
     text-align: center;
     font-size: 18px;
 }
+.mainnav-btn.active {
+    color: #FFEC62;
+}
 
 .main-body {
     overflow: scroll;

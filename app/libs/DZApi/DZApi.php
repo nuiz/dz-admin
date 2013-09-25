@@ -13,9 +13,10 @@ namespace DZApi;
 use Httpful\Http;
 use Httpful\Mime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class DZApi {
-    protected $host = 'http://localhost/api';
+    protected $host = 'http://61.19.147.72/api';
     protected $xdebug_session = false;
     protected $last_response = null;
     protected static $_instance = null;
@@ -68,17 +69,24 @@ class DZApi {
                 break;
         }
 
-        /*
         if($this->xdebug_session!=false || true)
         {
             $this->xdebug_session = 'PHPSTORM_DZ_SERVICE';
             $header['Cookie'] = "XDEBUG_SESSION=".$this->xdebug_session;
         }
-        */
         $httpFul->addHeaders($header);
         $this->last_response = $response = $httpFul->send();
 
-        return json_decode($response);
+        $data = json_decode($response);
+
+        if(isset($data->error)){
+            if($data->error->type=="Tappleby\\AuthToken\\Exceptions\\NotAuthorizedException"){
+                $this->clearUser();
+                echo "<h1>มีเข้าใช้งานจากอุปกรณ์อื่น</h1>";
+                echo Redirect::to('/');
+            }
+        }
+        return $data;
     }
 
     public function get_last_response()
@@ -98,6 +106,12 @@ class DZApi {
         \Session::put('DZApi.token', $token);
     }
 
+    public function clearUser()
+    {
+        \Session::remove('DZApi.user');
+        \Session::remove('DZApi.token');
+    }
+
     public function getUser()
     {
         return \Session::get('DZApi.user');
@@ -106,6 +120,27 @@ class DZApi {
     public function getToken()
     {
         return \Session::get('DZApi.token');
+    }
+
+    public function isEmpty($object)
+    {
+        return count((array)$object)==0;
+    }
+
+    public function isNotfound($object)
+    {
+        if(isset($object->error)){
+            if(isset($object->error->type)){
+                return $object->error->type == "Illuminate\\Database\\Eloquent\\ModelNotFoundException";
+            }
+        }
+        return false;
+    }
+
+    public function isEmptyOrNotFound($obj)
+    {
+        return $this->isEmpty($obj)
+            || $this->isNotfound($obj);
     }
 
     public function arrayToObject($d) {

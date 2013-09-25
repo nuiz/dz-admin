@@ -47,4 +47,9 @@ class ClassesGroupController extends BaseController {
         $classed = DZApi::instance()->call('get', '/class/'.$class_id);
         $this->layout->content = View::make('classes/groups/create/index', array('classed'=> $classed, 'error'=> $response->error->message, 'post'=> $_POST));
     }
+
+    public function getEdit($class_id, $group_id)
+    {
+        return $class_id."/".$group_id;
+    }
 }

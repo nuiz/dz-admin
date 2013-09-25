@@ -43,12 +43,12 @@
         @yield('content')
     </div>
     <div class="main-nav">
-        <a class="mainnav-btn" href="<?php echo URL::to('news');?>">news</a>
-        <a class="mainnav-btn" href="<?php echo URL::to('showcase');?>">showcase</a>
-        <a class="mainnav-btn" href="<?php echo URL::to('lesson');?>">lesson</a>
-        <a class="mainnav-btn" href="<?php echo URL::to('activity');?>">activity</a>
-        <a class="mainnav-btn" href="<?php echo URL::to('user');?>">user</a>
-        <a class="mainnav-btn" href="<?php echo URL::to('class');?>">class & group</a>
+        <a class="mainnav-btn @if(@$menu=='news'){{ 'active' }}@endif" href="<?php echo URL::to('news');?>">news</a>
+        <a class="mainnav-btn @if(@$menu=='showcase'){{ 'active' }}@endif" href="<?php echo URL::to('showcase');?>">showcase</a>
+        <a class="mainnav-btn @if(@$menu=='lesson'){{ 'active' }}@endif" href="<?php echo URL::to('lesson');?>">lesson</a>
+        <a class="mainnav-btn @if(@$menu=='activity'){{ 'active' }}@endif" href="<?php echo URL::to('activity');?>">activity</a>
+        <a class="mainnav-btn @if(@$menu=='user'){{ 'active' }}@endif" href="<?php echo URL::to('user');?>">user</a>
+        <a class="mainnav-btn @if(@$menu=='class'){{ 'active' }}@endif" href="<?php echo URL::to('class');?>">class & group</a>
     </div>
 </div>
 <script type="text/javascript">

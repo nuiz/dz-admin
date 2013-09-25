@@ -12,6 +12,7 @@ class ClassesController extends BaseController {
     {
         $this->layout->title = 'Class';
         $this->layout->header = View::make('classes/header');
+        $this->layout->menu = 'class';
 
         $classes = DZApi::instance()->call('get', '/class');
         $this->layout->content = View::make('classes/index', array('classes'=> $classes->data));
@@ -22,6 +23,7 @@ class ClassesController extends BaseController {
         $this->layout->title = 'Create Class';
         $this->layout->header = 'Create Class';
         $this->layout->content = View::make('classes/create/index');
+        $this->layout->content->headForm = "Create Class";
     }
 
     public function postCreate()
@@ -38,6 +40,31 @@ class ClassesController extends BaseController {
         $this->layout->header = View::make('classes/header');
 
         $this->layout->content = View::make('classes/create/index', $variables);
+        $this->layout->content->headForm = 'Create Class';
+    }
+
+    public function getEdit($class_id){
+        $classed = DZApi::instance()->call('get', "/class/{$class_id}");
+        if(DZApi::instance()->isEmptyOrNotFound($classed)){
+            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('not found class');
+        }
+        $this->layout->title = 'Edit Class';
+        $this->layout->header = View::make('classes/header');
+        $this->layout->content = View::make('classes/create/index');
+        $this->layout->content->post = $classed;
+        $this->layout->content->headForm = 'Edit Class';
+    }
+
+    public function postEdit($class_id){
+        $res = DZApi::instance()->call('put', "/class/{$class_id}", Input::all());
+        if(!isset($res->error)){
+            Return Redirect::to('class');
+        }
+        $this->layout->title = 'Edit Class';
+        $this->layout->header = View::make('classes/header');
+        $this->layout->content = View::make('classes/create/index');
+        $this->layout->content->post = Input::all();
+        $this->layout->content->headForm = 'Edit Class';
     }
 
     public function getDelete()
