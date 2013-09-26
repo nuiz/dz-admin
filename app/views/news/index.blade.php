@@ -13,7 +13,7 @@
         <tr>
             <th>id</th>
             <th>name</th>
-            <th>picture</th>
+            <th>picture or video</th>
             <th>message</th>
             <th>edit</th>
             <th>delete</th>
@@ -23,8 +23,10 @@
             <td>{{ $new->id }}</td>
             <td>{{ $new->name }}</td>
             <td>
-                @if(@$new->picture)
+                @if(@$new->picture->id)
                 <a href="{{ $new->picture->link }}" class="glyphicon glyphicon-picture"></a>
+                @elseif(@$new->video->id)
+                <a href="{{ $new->video->link }}" class="glyphicon glyphicon-facetime-video"></a>
                 @endif
             </td>
             <td>{{ nl2br($new->message) }}</td>

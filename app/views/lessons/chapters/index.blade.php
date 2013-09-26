@@ -13,6 +13,7 @@
         <tr>
             <th>id</th>
             <th>name</th>
+            <th>picture</th>
             <th>description</th>
             <th>video</th>
             <th>edit</th>
@@ -21,6 +22,10 @@
         @foreach($chapters as $chapter)
         <tr>
             <td>{{ $chapter->id }}</td>
+            <td>@if(@$chapter->picture->id)
+                <a href="{{ $chapter->picture->link }}" class="glyphicon glyphicon-picture"></a>
+                @endif
+            </td>
             <td>{{ $chapter->name }}</td>
             <td>{{ $chapter->description }}</td>
             <td><a href="{{ URL::to('lesson/'.$chapter->lesson_id.'/chapter/'.$chapter->id.'/video') }}">{{ $chapter->video_length }} videos</a></td>

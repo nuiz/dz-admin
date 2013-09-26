@@ -94,6 +94,11 @@ class DZApi {
         return $this->last_response;
     }
 
+    public function getHost()
+    {
+        return $this->host;
+    }
+
     public function setXDebugSession($xdebug_session)
     {
         // PHPSTORM_DZ_SERVICE

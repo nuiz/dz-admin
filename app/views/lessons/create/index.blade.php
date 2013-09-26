@@ -27,6 +27,10 @@
         border-radius: 6px;
         margin-top: 10px;
     }
+
+    .logo-choice {
+        float: left;
+    }
 </style>
 <form class="create-form" method="post">
     <legend>Create Lesson</legend>
@@ -65,6 +69,37 @@
             <div class="color-choice" style="background: #7976FF;" color="#7976FF"></div>
         </div>
     </div>
+    <div class="form-group">
+        <label>logo</label>
+        <input type="hidden" name="logo" value="@if(@$post['logo']){{ $post['logo'] }}@endif">
+        <div class="logo-chose"></div>
+        <div class="logo-list" style="display: none;">
+            <div class="logo-choice" logo="01"><img src="{{ URL::to('img/lesson_logo/Dancer01Ip5@2x.png') }}" height="60"></div>
+            <div class="logo-choice" logo="02"><img src="{{ URL::to('img/lesson_logo/Dancer02Ip5@2x.png') }}" height="60"></div>
+            <div class="logo-choice" logo="03"><img src="{{ URL::to('img/lesson_logo/Dancer03Ip5@2x.png') }}" height="60"></div>
+            <div class="logo-choice" logo="04"><img src="{{ URL::to('img/lesson_logo/Dancer04Ip5@2x.png') }}" height="60"></div>
+            <div class="logo-choice" logo="05"><img src="{{ URL::to('img/lesson_logo/Dancer05Ip5@2x.png') }}" height="60"></div>
+            <div class="logo-choice" logo="06"><img src="{{ URL::to('img/lesson_logo/Dancer06Ip5@2x.png') }}" height="60"></div>
+            <div class="logo-choice" logo="07"><img src="{{ URL::to('img/lesson_logo/Dancer07Ip5@2x.png') }}" height="60"></div>
+            <div class="logo-choice" logo="08"><img src="{{ URL::to('img/lesson_logo/Dancer08Ip5@2x.png') }}" height="60"></div>
+            <div class="logo-choice" logo="09"><img src="{{ URL::to('img/lesson_logo/Dancer09Ip5@2x.png') }}" height="60"></div>
+            <div class="logo-choice" logo="10"><img src="{{ URL::to('img/lesson_logo/Dancer10Ip5@2x.png') }}" height="60"></div>
+            <div class="logo-choice" logo="11"><img src="{{ URL::to('img/lesson_logo/Dancer11Ip5@2x.png') }}" height="60"></div>
+            <div class="logo-choice" logo="12"><img src="{{ URL::to('img/lesson_logo/Dancer12Ip5@2x.png') }}" height="60"></div>
+            <div class="logo-choice" logo="13"><img src="{{ URL::to('img/lesson_logo/Dancer13Ip5@2x.png') }}" height="60"></div>
+            <div class="logo-choice" logo="14"><img src="{{ URL::to('img/lesson_logo/Dancer14Ip5@2x.png') }}" height="60"></div>
+            <div class="logo-choice" logo="15"><img src="{{ URL::to('img/lesson_logo/Dancer15Ip5@2x.png') }}" height="60"></div>
+            <div class="logo-choice" logo="16"><img src="{{ URL::to('img/lesson_logo/Dancer16Ip5@2x.png') }}" height="60"></div>
+            <div class="logo-choice" logo="17"><img src="{{ URL::to('img/lesson_logo/Dancer17Ip5@2x.png') }}" height="60"></div>
+            <div class="logo-choice" logo="18"><img src="{{ URL::to('img/lesson_logo/Dancer18Ip5@2x.png') }}" height="60"></div>
+            <div class="logo-choice" logo="19"><img src="{{ URL::to('img/lesson_logo/Dancer19Ip5@2x.png') }}" height="60"></div>
+            <div class="logo-choice" logo="20"><img src="{{ URL::to('img/lesson_logo/Dancer20Ip5@2x.png') }}" height="60"></div>
+            <div class="logo-choice" logo="21"><img src="{{ URL::to('img/lesson_logo/Dancer21Ip5@2x.png') }}" height="60"></div>
+            <div class="logo-choice" logo="22"><img src="{{ URL::to('img/lesson_logo/Dancer22Ip5@2x.png') }}" height="60"></div>
+            <div class="logo-choice" logo="23"><img src="{{ URL::to('img/lesson_logo/Dancer23Ip5@2x.png') }}" height="60"></div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
     <button class="btn btn-primary" type="submit">Submit</button>
     @if(@$error_message)
     <div class="alert alert-danger" style="margin-top: 20px;">{{ $error_message }}</div>
@@ -85,6 +120,21 @@ $(function(){
 
     if($('input[name="color"]').val()==''){
         $('.color-choice').first().click();
+    }
+
+    $('.logo-chose').bind('touchstart click', function(e){
+        $('.logo-list').slideDown();
+    });
+
+    $('.logo-choice').bind('click', function(e){
+        var logo = $(this).attr('logo');
+        $('.logo-chose').html($('img', this).clone());
+        $('input[name="logo"]').val(logo);
+        $('.logo-list').slideUp();
+    });
+
+    if($('input[name="logo"]').val()==''){
+        $('.logo-choice').first().click();
     }
 });
 </script>

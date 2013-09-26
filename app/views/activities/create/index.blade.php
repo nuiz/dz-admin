@@ -17,11 +17,15 @@
         padding: 20px;
     }
 </style>
-<form class="create-form" method="post">
+<form class="create-form" method="post" enctype="multipart/form-data">
     <legend>Create Activity</legend>
     <div class="form-group">
         <label>name</label>
         <input type="text" class="form-control" name="name" value="@if(@$post['name']){{ $post['name'] }}@endif">
+    </div>
+    <div class="form-group">
+        <label>picture</label>
+        <input type="file" class="form-control" name="picture">
     </div>
     <div class="form-group">
         <label>start_time</label>

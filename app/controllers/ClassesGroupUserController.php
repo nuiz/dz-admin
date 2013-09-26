@@ -13,7 +13,7 @@ class ClassesGroupUserController extends BaseController {
         $classed = DZApi::instance()->call('get', "/class/{$class_id}");
         $group = DZApi::instance()->call('get', "/class/{$class_id}/group/{$group_id}");
 
-        $result = DZApi::instance()->call('get', "/class/{$class_id}/group/{$group_id}/user", array('import'=> "true"));
+        $result = DZApi::instance()->call('get', "/class/{$class_id}/group/{$group_id}/user", array('import'=> 'false'));
 
         $this->layout->title = 'Class >> Group >> User';
         $this->layout->header = View::make('classes/groups/users/header', array('classed'=> $classed, 'group'=> $group));
@@ -32,7 +32,7 @@ class ClassesGroupUserController extends BaseController {
         $this->layout->title = 'Class >> Group >> Import user';
         $this->layout->header = 'Class >> Group >> Import user';
 
-        $users = DZApi::instance()->call('get', "/class/{$class_id}/group/{$group_id}/user", array("import"=> "false"));
+        $users = DZApi::instance()->call('get', "/class/{$class_id}/group/{$group_id}/user", array("import"=> "true"));
         $this->layout->content = View::make('classes/groups/users/imports/index', array(
             'users'=> $users->data,
             'classed'=> $classed,

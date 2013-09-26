@@ -29,15 +29,31 @@ class LessonChapterController extends BaseController {
 
     public function postCreate($lesson_id)
     {
-        $res = DZApi::instance()->call('post', "/lesson/{$lesson_id}/chapter", Input::all());
+        $post = Input::all();
+        if(isset($post['picture'])){
+            unset($post['picture']);
+        }
+        $varView = array('post'=> $post);
+        $uploads = null;
+
+        if(Input::hasFile('picture')){
+            $picFile = Input::file('picture');
+            $upload_name = str_replace('.', '', microtime(true)).'.'.$picFile->getClientOriginalExtension();
+            $picFile->move('upload_tmp', $upload_name);
+            chmod("upload_tmp/".$upload_name, "0777");
+
+            $uploads = array('picture'=> realPath("upload_tmp/".$upload_name));
+        }
+        $res = DZApi::instance()->call('post', "/lesson/{$lesson_id}/chapter", $post, $uploads);
         if(!isset($res->error)){
             return Redirect::to("/lesson/{$lesson_id}/chapter");
         }
+        $varView['error_message'] = $res->error->message;
 
         $this->layout->title = 'Lesson >> Create Chapter';
         $this->layout->header = 'Lesson >> Create Chapter';
 
-        $this->layout->content = View::make('lessons/chapters/create/index', array('post'=> Input::all(), 'error_message'=> $res->error->message));
+        $this->layout->content = View::make('lessons/chapters/create/index', $varView);
     }
 
     public function getDelete($lesson_id, $id)

@@ -23,7 +23,7 @@
         <tr>
             <td>{{ $video->id }}</td>
             <td>{{ $video->name }}</td>
-            <td><a href="{{ $video->link }}" class="glyphicon glyphicon-picture"></a></td>
+            <td><a href="{{ $video->link }}" class="glyphicon glyphicon-facetime-video"></a></td>
             <td>{{ nl2br($video->description) }}</td>
             <td><a class="glyphicon glyphicon-edit" href="{{ URL::to('lesson/'.$lesson->id.'/chapter/'.$chapter->id.'/video/edit/'.$video->id) }}"></a></td>
             <td><a class="glyphicon glyphicon-remove action-remove" href="{{ URL::to('lesson/'.$lesson->id.'/chapter/'.$chapter->id.'/video/delete/'.$video->id) }}"></a></td>

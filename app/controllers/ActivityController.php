@@ -27,15 +27,29 @@ class ActivityController extends BaseController {
 
     public function postCreate()
     {
-        $res = DZApi::instance()->call('post', '/activity', Input::all());
+        $post = Input::all();
+        $varView = array('post'=> $post);
+        $uploads = null;
+
+        if(Input::hasFile('picture')){
+            $picFile = Input::file('picture');
+            $upload_name = str_replace('.', '', microtime(true)).'.'.$picFile->getClientOriginalExtension();
+            $picFile->move('upload_tmp', $upload_name);
+            chmod("upload_tmp/".$upload_name, "0777");
+
+            $uploads = array('picture'=> realPath("upload_tmp/".$upload_name));
+        }
+
+        $res = DZApi::instance()->call('post', '/activity', $post, $uploads);
         if(!isset($res->error)){
             return Redirect::to('activity');
         }
+        $varView['error_message'] = $res->error->message;
 
         $this->layout->title = 'Create activity';
         $this->layout->header = 'Create activity';
 
-        $this->layout->content = View::make('activities/create/index', array('post'=> Input::all(), 'error_message'=> $res->error->message));
+        $this->layout->content = View::make('activities/create/index', $varView);
     }
 
     public function getDelete($id)

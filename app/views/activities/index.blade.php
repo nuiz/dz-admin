@@ -13,6 +13,7 @@
         <tr>
             <th>id</th>
             <th>name</th>
+            <th>picture</th>
             <th>message</th>
             <th>date</th>
             <th>edit</th>
@@ -22,6 +23,11 @@
         <tr>
             <td>{{ $activity->id }}</td>
             <td>{{ $activity->name }}</td>
+            <td>
+                @if(@$activity->picture->id)
+                <a href="{{ $activity->picture->link }}" class="glyphicon glyphicon-picture"></a>
+                @endif
+            </td>
             <td>{{ $activity->message }}</td>
             <td>{{ $activity->start_time }}</td>
             <td><a href="{{ URL::to('activity/edit/'.$activity->id) }}" class="glyphicon glyphicon-edit edit-button"></a></td>

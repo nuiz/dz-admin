@@ -12,6 +12,7 @@
     <table class="table table-bordered">
         <tr>
             <th>id</th>
+            <th>logo</th>
             <th>color</th>
             <th>name</th>
             <th>chapter</th>
@@ -21,6 +22,7 @@
         @foreach($lessons as $lesson)
         <tr>
             <td>{{ $lesson->id }}</td>
+            <td><img src="{{ $lesson->logo_link }}" height="32"></td>
             <td class="lesson-color">{{ $lesson->color }}</td>
             <td>{{ $lesson->name }}</td>
             <td><a href="{{ URL::to('lesson/'.$lesson->id.'/chapter') }}">{{ $lesson->chapter_length }} capters</a></td>
