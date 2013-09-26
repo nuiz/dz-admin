@@ -15,6 +15,7 @@ class LessonChapterVideoController extends BaseController {
         $chapter = DZApi::instance()->call('get', "/lesson/{$lesson_id}/chapter/{$chapter_id}");
         $videos = DZApi::instance()->call('get', "/lesson/{$lesson_id}/chapter/{$chapter_id}/video");
 
+        $this->layout->menu = "lesson";
         $this->layout->title = "Lesson >> Chapter >> Video";
         $this->layout->header = View::make('lessons/chapters/videos/header', array('lesson'=> $lesson, 'chapter'=> $chapter));
         $this->layout->content = View::make('lessons/chapters/videos/index', array('videos'=> $videos->data, 'lesson'=> $lesson, 'chapter'=> $chapter));
@@ -24,6 +25,7 @@ class LessonChapterVideoController extends BaseController {
     {
         $this->layout->title = "Lesson >> Chapter >> Create Video";
         $this->layout->header = "Lesson >> Chapter >> Create Video";
+        $this->layout->menu = "lesson";
 
         $this->layout->content = View::make('lessons/chapters/videos/create/index');
     }
@@ -35,25 +37,38 @@ class LessonChapterVideoController extends BaseController {
             @ini_set( 'post_max_size', '64M');
             @ini_set( 'max_execution_time', '300' );
 
-            $videoFile = Input::file('video');
-            $ext = strtolower($videoFile->getClientOriginalExtension());
-            $bufferName = str_replace('.', '', microtime(true)).'.'.$ext;
-            $videoFile->move('upload_tmp', $bufferName);
-            chmod('upload_tmp/'.$bufferName, 0777);
+            $varView = array();
             $post = Input::all();
-            unset($post['video']);
+            if(isset($post['video'])){
+                unset($post['video']);
+            }
+            $varView['post'] = $post;
+            if(Input::hasFile('video')){
+                $videoFile = Input::file('video');
+                $ext = strtolower($videoFile->getClientOriginalExtension());
+                $bufferName = str_replace('.', '', microtime(true)).'.'.$ext;
+                $videoFile->move('upload_tmp', $bufferName);
+                chmod('upload_tmp/'.$bufferName, 0777);
+                $post = Input::all();
+                unset($post['video']);
 
-            $files = array('video'=> realpath('upload_tmp/'.$bufferName));
-            $res = DZApi::instance()->call('post', "/lesson/{$lesson_id}/chapter/{$chapter_id}/video", $post, $files);
+                $files = array('video'=> realpath('upload_tmp/'.$bufferName));
+                $res = DZApi::instance()->call('post', "/lesson/{$lesson_id}/chapter/{$chapter_id}/video", $post, $files);
 
-            if(!isset($res->error)){
-                return Redirect::to("/lesson/{$lesson_id}/chapter/{$chapter_id}/video");
+                if(!isset($res->error)){
+                    return Redirect::to("/lesson/{$lesson_id}/chapter/{$chapter_id}/video");
+                }
+                $varView['error_message'] = $res->error->message;
+            }
+            else {
+                $varView['error_message'] = 'require file video upload';
             }
 
             $this->layout->title = "Lesson >> Chapter >> Create Video";
             $this->layout->header = "Lesson >> Chapter >> Create Video";
+            $this->layout->menu = "lesson";
 
-            $this->layout->content = View::make('lessons/chapters/videos/create/index', array('post'=> $post, 'error_message'=> $res->error->message));
+            $this->layout->content = View::make('lessons/chapters/videos/create/index', $varView);
         }
         catch (Exception $e){
             if(isset($bufferName))

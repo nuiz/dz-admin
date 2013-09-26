@@ -24,8 +24,8 @@
         <input type="text" class="form-control" name="name" value="@if(@$attr['name']){{ $attr['name'] }}@endif">
     </div>
     <div class="form-group">
-        <label>video or picture</label>
-        <input type="file" class="form-control" name="media">
+        <label>แนบไฟล์</label>
+        <input type="file" class="form-control" name="picture">
     </div>
     <div class="form-group">
         <label>message</label>

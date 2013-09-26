@@ -12,6 +12,7 @@ class ShowcaseController extends BaseController {
     {
         $this->layout->title = 'Showcase';
         $this->layout->header = View::make('showcases/header');
+        $this->layout->menu = "showcase";
 
         $showcases = DZApi::instance()->call('get', '/showcase');
         $this->layout->content = View::make('showcases/index', array('showcases'=> $showcases->data));
@@ -37,6 +38,7 @@ class ShowcaseController extends BaseController {
             $error_message = $res->error->message;
         }
 
+        $this->layout->menu = "showcase";
         $this->layout->title = 'Add Showcase';
         $this->layout->header = 'Add Showcase';
         $this->layout->content = View::make('showcases/create/index',

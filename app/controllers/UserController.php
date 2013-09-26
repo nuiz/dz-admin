@@ -13,6 +13,7 @@ class UserController extends BaseController {
     {
         $this->layout->title = 'User Manager';
         $this->layout->header = 'User Manager';
+        $this->layout->menu = "user";
 
         DZApi::instance()->setXDebugSession('PHPSTORM_DZ_SERVICE');
         $users = DZApi::instance()->call('get', '/user');

@@ -16,6 +16,7 @@ class ClassesGroupController extends BaseController {
         $this->layout->title = 'Group Manager';
         $this->layout->header = View::make('classes/groups/header', array('classed'=> $classed));
         $this->layout->content = View::make('classes/groups/index', array('classed'=> $classed, 'groups'=> $groups->data));
+        $this->layout->menu = "class";
     }
 
     public function getDelete($class_id)
@@ -31,6 +32,7 @@ class ClassesGroupController extends BaseController {
         $this->layout->title = 'Create Group';
         $this->layout->header = 'Create Group';
         $this->layout->content = View::make('classes/groups/create/index', array('classed'=> $classed));
+        $this->layout->menu = "class";
     }
 
     public function postCreate($class_id)
@@ -43,17 +45,9 @@ class ClassesGroupController extends BaseController {
         }
         $this->layout->title = 'Create Group';
         $this->layout->header = 'Create Group';
+        $this->layout->menu = "class";
 
         $classed = DZApi::instance()->call('get', '/class/'.$class_id);
         $this->layout->content = View::make('classes/groups/create/index', array('classed'=> $classed, 'error'=> $response->error->message, 'post'=> $_POST));
-    }
-
-    public function getEdit($class_id, $group_id)
-    {
-        $this->layout->title = 'Edit Group';
-        $this->layout->header = 'Edit Group';
-
-        $group = DZApi::instance()->call('get', "/class/{$class_id}/group/{$group_id}");
-        $this->layout->content = View::make('classes/groups/create/index', array('post'=> $group));
     }
 }

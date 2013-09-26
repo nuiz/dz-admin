@@ -14,6 +14,7 @@ class LessonChapterController extends BaseController {
         $this->layout->title = 'Lesson >> Chapter';
         $this->layout->header = View::make('lessons/chapters/header', array('lesson'=> $lesson));
 
+        $this->layout->menu = "lesson";
         $res = DZApi::instance()->call('get', "/lesson/{$lesson_id}/chapter");
         $this->layout->content = View::make('lessons/chapters/index', array('chapters'=> $res->data, 'lesson'=> $lesson));
     }
@@ -23,6 +24,7 @@ class LessonChapterController extends BaseController {
         //$lesson = DZApi::instance()->call('get', "/lesson/{$lesson_id}");
         $this->layout->title = 'Lesson >> Create Chapter';
         $this->layout->header = 'Lesson >> Create Chapter';
+        $this->layout->menu = "lesson";
 
         $this->layout->content = View::make('lessons/chapters/create/index');
     }
@@ -52,6 +54,7 @@ class LessonChapterController extends BaseController {
 
         $this->layout->title = 'Lesson >> Create Chapter';
         $this->layout->header = 'Lesson >> Create Chapter';
+        $this->layout->menu = "lesson";
 
         $this->layout->content = View::make('lessons/chapters/create/index', $varView);
     }
