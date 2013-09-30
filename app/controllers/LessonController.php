@@ -12,6 +12,7 @@ class LessonController extends BaseController {
     {
         $this->layout->title = 'Lesson';
         $this->layout->header = View::make('lessons/header');
+        $this->layout->menu = "lesson";
 
         $res = DZApi::instance()->call('get', '/lesson');
         $this->layout->content = View::make('lessons/index', array('lessons'=> $res->data));
@@ -21,6 +22,7 @@ class LessonController extends BaseController {
     {
         $this->layout->title = 'Create lesson';
         $this->layout->header = 'Create lesson';
+        $this->layout->menu = "lesson";
 
         $this->layout->content = View::make('lessons/create/index');
     }
@@ -34,6 +36,7 @@ class LessonController extends BaseController {
 
         $this->layout->title = 'Create lesson';
         $this->layout->header = 'Create lesson';
+        $this->layout->menu = "lesson";
 
         $this->layout->content = View::make('lessons/create/index', array('post'=> Input::all(), 'error_message'=> $res->error->message));
     }

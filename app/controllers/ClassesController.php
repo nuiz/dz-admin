@@ -24,6 +24,7 @@ class ClassesController extends BaseController {
         $this->layout->header = 'Create Class';
         $this->layout->content = View::make('classes/create/index');
         $this->layout->content->headForm = "Create Class";
+        $this->layout->menu = "class";
     }
 
     public function postCreate()
@@ -41,6 +42,7 @@ class ClassesController extends BaseController {
 
         $this->layout->content = View::make('classes/create/index', $variables);
         $this->layout->content->headForm = 'Create Class';
+        $this->layout->menu = "class";
     }
 
     public function getEdit($class_id){
@@ -53,6 +55,7 @@ class ClassesController extends BaseController {
         $this->layout->content = View::make('classes/create/index');
         $this->layout->content->post = $classed;
         $this->layout->content->headForm = 'Edit Class';
+        $this->layout->menu = "class";
     }
 
     public function postEdit($class_id){
@@ -65,6 +68,7 @@ class ClassesController extends BaseController {
         $this->layout->content = View::make('classes/create/index');
         $this->layout->content->post = Input::all();
         $this->layout->content->headForm = 'Edit Class';
+        $this->layout->menu = "class";
     }
 
     public function getDelete()

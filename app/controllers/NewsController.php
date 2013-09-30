@@ -12,8 +12,8 @@ class NewsController extends BaseController {
     {
         $this->layout->title = "News";
         $this->layout->header = View::make('news/header');
+        $this->layout->menu = "news";
 
-        DZApi::instance()->setXDebugSession('PHPSTORM_DZ_SERVICE');
         $news = DZApi::instance()->call('get', '/news');
         $this->layout->content = View::make('news/index', array('news'=> $news->data));
     }
@@ -23,6 +23,7 @@ class NewsController extends BaseController {
         $this->layout->title = 'Create news';
         $this->layout->header = 'Create news';
         $this->layout->content = View::make('news/create/index');
+        $this->layout->menu = "news";
     }
 
     public function postCreate()
@@ -31,9 +32,9 @@ class NewsController extends BaseController {
         $realpath = '';
         try {
             if(Input::hasFile('media')){
-                $media = Input::file('media');
-                $upload_name = str_replace('.', '', microtime(true)).'.'.$media->getClientOriginalExtension();
-                $media->move('upload_tmp', $upload_name);
+                $picture = Input::file('media');
+                $upload_name = str_replace('.', '', microtime(true)).'.'.$picture->getClientOriginalExtension();
+                $picture->move('upload_tmp', $upload_name);
                 $realpath = realpath('upload_tmp/'.$upload_name);
                 $upload = array('media'=> $realpath);
                 chmod('upload_tmp/'.$upload_name, 0777);
@@ -49,6 +50,7 @@ class NewsController extends BaseController {
             if(!isset($res->error)){
                 return Redirect::to('news');
             }
+            $this->layout->menu = "news";
             $this->layout->title = 'Create news';
             $this->layout->header = 'Create news';
             $this->layout->content = View::make('news/create/index', array('attr'=> $post, 'error'=> $res->error->message));

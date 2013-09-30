@@ -16,6 +16,7 @@
             <th>picture</th>
             <th>message</th>
             <th>date</th>
+            <th>user joined</th>
             <th>edit</th>
             <th>delete</th>
         </tr>
@@ -30,6 +31,9 @@
             </td>
             <td>{{ $activity->message }}</td>
             <td>{{ $activity->start_time }}</td>
+            <td>
+                {{ $activity->user_length }}
+            </td>
             <td><a href="{{ URL::to('activity/edit/'.$activity->id) }}" class="glyphicon glyphicon-edit edit-button"></a></td>
             <td><a href="{{ URL::to('activity/delete/'.$activity->id) }}" class="glyphicon glyphicon-remove del-button"></a></td>
         </tr>

@@ -15,6 +15,7 @@ class ActivityController extends BaseController {
 
         $res = DZApi::instance()->call('get', '/activity');
         $this->layout->content = View::make('activities/index', array('activities'=> $res->data));
+        $this->layout->menu = "activity";
     }
 
     public function getCreate()
@@ -23,6 +24,7 @@ class ActivityController extends BaseController {
         $this->layout->header = 'Create activity';
 
         $this->layout->content = View::make('activities/create/index');
+        $this->layout->menu = "activity";
     }
 
     public function postCreate()
@@ -50,6 +52,7 @@ class ActivityController extends BaseController {
         $this->layout->header = 'Create activity';
 
         $this->layout->content = View::make('activities/create/index', $varView);
+        $this->layout->menu = "activity";
     }
 
     public function getDelete($id)

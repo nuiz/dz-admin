@@ -16,6 +16,7 @@ class ClassesGroupController extends BaseController {
         $this->layout->title = 'Group Manager';
         $this->layout->header = View::make('classes/groups/header', array('classed'=> $classed));
         $this->layout->content = View::make('classes/groups/index', array('classed'=> $classed, 'groups'=> $groups->data));
+        $this->layout->menu = "class";
     }
 
     public function getDelete($class_id)
@@ -30,30 +31,42 @@ class ClassesGroupController extends BaseController {
 
         $this->layout->title = 'Create Group';
         $this->layout->header = 'Create Group';
-        $this->layout->content = View::make('classes/groups/create/index', array('classed'=> $classed));
+        $this->layout->content = View::make('classes/groups/create/index');
+        $this->layout->menu = "class";
     }
 
     public function postCreate($class_id)
     {
-        \DZApi\DZApi::instance()->setXDebugSession('PHPSTORM_DZ_SERVICE');
-        $response = DZApi::instance()->call("post", "/class/{$class_id}/group", $_POST);
+        $post = Input::all();
+        if(isset($post['picture'])){
+            unset($post['picture']);
+        }
+        $varView = array('post'=> $post);
+        $uploads = null;
+
+        if(Input::hasFile('picture')){
+            $picFile = Input::file('picture');
+            $upload_name = str_replace('.', '', microtime(true)).'.'.$picFile->getClientOriginalExtension();
+            $picFile->move('upload_tmp', $upload_name);
+            chmod("upload_tmp/".$upload_name, "0777");
+
+            $uploads = array('picture'=> realPath("upload_tmp/".$upload_name));
+        }
+
+        $response = DZApi::instance()->call("post", "/class/{$class_id}/group", $_POST, $uploads);
+        if(isset($bufferName))
+            @unlink('upload_tmp/'.$bufferName);
+
         if(!isset($response->error))
         {
             return Redirect::to("class/{$class_id}/group");
         }
+        $varView['error_message'] = $response->error->message;
+
         $this->layout->title = 'Create Group';
         $this->layout->header = 'Create Group';
+        $this->layout->menu = "class";
 
-        $classed = DZApi::instance()->call('get', '/class/'.$class_id);
-        $this->layout->content = View::make('classes/groups/create/index', array('classed'=> $classed, 'error'=> $response->error->message, 'post'=> $_POST));
-    }
-
-    public function getEdit($class_id, $group_id)
-    {
-        $this->layout->title = 'Edit Group';
-        $this->layout->header = 'Edit Group';
-
-        $group = DZApi::instance()->call('get', "/class/{$class_id}/group/{$group_id}");
-        $this->layout->content = View::make('classes/groups/create/index', array('post'=> $group));
+        $this->layout->content = View::make('classes/groups/create/index', $varView);
     }
 }

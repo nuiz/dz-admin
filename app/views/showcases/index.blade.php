@@ -24,7 +24,7 @@
         @foreach($showcases as $showcase)
         <tr>
             <td>{{ $showcase->id }}</td>
-            <td class="youtube_id">{{ $showcase->youtube_id }}</td>
+            <td>{{ $showcase->name }}</td>
             <td><a href="http://www.youtube.com/watch?v={{ $showcase->youtube_id }}" target="_blank">http://www.youtube.com/watch?v={{ $showcase->youtube_id }}</a></td>
             <td class="text-center"><a class="glyphicon glyphicon-remove remove-button" href="{{ URL::to('showcase/delete/'.$showcase->id) }}"></a></td>
         </tr>
@@ -50,6 +50,7 @@ $(function(){
         $('.add-showcase-form').slideToggle();
     });
 
+    /*
     $('.youtube_id').each(function(index, el){
         var youtube_id = $(el).text();
         var href = 'http://gdata.youtube.com/feeds/api/videos?q='+youtube_id+'&v=2&alt=jsonc';
@@ -59,6 +60,7 @@ $(function(){
             $(el).text(data.data.items[0].title);
         }, 'json');
     });
+    */
 
     $('.remove-button').bind('touchstart click', function(e){
         e.preventDefault();
