@@ -33,7 +33,7 @@
     }
 </style>
 <form class="create-form" method="post">
-    <legend>Create Lesson</legend>
+    <legend>{{ $header }}</legend>
     <div class="form-group">
         <label>name</label>
         <input type="text" class="form-control" name="name" value="@if(@$post['name']){{ $post['name'] }}@endif">
@@ -121,6 +121,10 @@ $(function(){
     if($('input[name="color"]').val()==''){
         $('.color-choice').first().click();
     }
+    else {
+        var color = $('input[name="color"]').val();
+        $('.color-choice[color="'+color+'"]').click();
+    }
 
     $('.logo-chose').bind('touchstart click', function(e){
         $('.logo-list').slideDown();
@@ -135,6 +139,10 @@ $(function(){
 
     if($('input[name="logo"]').val()==''){
         $('.logo-choice').first().click();
+    }
+    else {
+        var logo = $('input[name="logo"]').val();
+        $('.logo-choice[logo="'+logo+'"]').click();
     }
 });
 </script>

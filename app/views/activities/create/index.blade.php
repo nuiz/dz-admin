@@ -18,18 +18,27 @@
     }
 </style>
 <form class="create-form" method="post" enctype="multipart/form-data">
-    <legend>Create Activity</legend>
+    <legend>{{ $header }}</legend>
     <div class="form-group">
         <label>name</label>
         <input type="text" class="form-control" name="name" value="@if(@$post['name']){{ $post['name'] }}@endif">
     </div>
-    <div class="form-group">
-        <label>picture</label>
-        <input type="file" class="form-control" name="picture">
+    <div class="form-group field-media">
+        <label>cover pic</label>
+        <div class="media-block">
+            @if(@$post['picture']['id'])
+            <div class="field-img media">
+                <div class="menu"><a href="#" class="delete-media">เอาออก</a> <a href="#" class="reupload-media">upload ใหม่</a></div>
+                <img src="{{ $post['picture']['link'] }}" />
+            </div>
+            @else
+            <input type="file" class="form-control" name="picture">
+            @endif
+        </div>
     </div>
     <div class="form-group">
         <label>start_time</label>
-        <input type="datetime-local" class="form-control" name="start_time" value="@if(@$post['start_time']){{ $post['start_time'] }}@endif">
+        <input type="datetime-local" class="form-control" name="start_time" value="@if(@$post['start_time']){{ date("Y-m-d\TH:i", strtotime($post['start_time'])) }}@endif">
     </div>
     <div class="form-group">
         <label>message</label>
@@ -40,4 +49,16 @@
     <div class="alert alert-danger" style="margin-top: 20px;">{{ $error_message }}</div>
     @endif
 </form>
+<script type="text/javascript">
+    $(function(){
+        $('.reupload-media').click(function(e){
+            e.preventDefault();
+            $('.media-block').html('<input type="file" class="form-control" name="picture">');
+        });
+        $('.delete-media').click(function(e){
+            e.preventDefault();
+            $('.field-media').html('<input type="hidden" name="deletePicture" value="yes">');
+        });
+    });
+</script>
 @stop

@@ -20,11 +20,12 @@ class LessonController extends BaseController {
 
     public function getCreate()
     {
-        $this->layout->title = 'Create lesson';
-        $this->layout->header = 'Create lesson';
+        $this->layout->title = 'Create Lesson';
+        $this->layout->header = 'Create Lesson';
         $this->layout->menu = "lesson";
 
         $this->layout->content = View::make('lessons/create/index');
+        $this->layout->content->header = "Create Lesson";
     }
 
     public function postCreate()
@@ -34,11 +35,12 @@ class LessonController extends BaseController {
             return Redirect::to('lesson');
         }
 
-        $this->layout->title = 'Create lesson';
-        $this->layout->header = 'Create lesson';
+        $this->layout->title = 'Create Lesson';
+        $this->layout->header = 'Create Lesson';
         $this->layout->menu = "lesson";
 
         $this->layout->content = View::make('lessons/create/index', array('post'=> Input::all(), 'error_message'=> $res->error->message));
+        $this->layout->content->header = "Create Lesson";
     }
 
     public function getDelete($id)
@@ -47,16 +49,34 @@ class LessonController extends BaseController {
         return Response::json($res);
     }
 
-    /*
+
     public function getEdit($id)
     {
+        $res = DZApi::instance()->call("get", "/lesson/{$id}");
 
+        $this->layout->title = 'Edit Lesson';
+        $this->layout->header = 'Edit Lesson';
+        $this->layout->menu = "lesson";
+
+        $this->layout->content = View::make('lessons/create/index', array('post'=> json_decode(json_encode($res), true)));
+        $this->layout->content->header = "Edit Lesson";
     }
-    */
 
     public function postEdit($id)
     {
-        $res = DZApi::instance()->call('update', '/lesson/'.$id, Input::all());
-        return Response::json($res);
+        $res = DZApi::instance()->call('put', '/lesson/'.$id, $_POST);
+        if(!isset($res->error->message)){
+            return Redirect::to("lesson");
+        }
+
+        $varView = array('post'=> json_decode(json_encode($res)));
+        $varView['error_message'] = $res->message->error;
+
+        $this->layout->title = 'Edit Lesson';
+        $this->layout->header = 'Edit Lesson';
+        $this->layout->menu = "lesson";
+
+        $this->layout->content = View::make('lessons/create/index', $varView);
+        $this->layout->content->header = "Edit Lesson";
     }
 }

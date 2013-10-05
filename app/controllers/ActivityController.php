@@ -20,10 +20,11 @@ class ActivityController extends BaseController {
 
     public function getCreate()
     {
-        $this->layout->title = 'Create activity';
-        $this->layout->header = 'Create activity';
+        $this->layout->title = 'Create Activity';
+        $this->layout->header = 'Create Activity';
 
         $this->layout->content = View::make('activities/create/index');
+        $this->layout->content->header = "Create Activity";
         $this->layout->menu = "activity";
     }
 
@@ -48,8 +49,8 @@ class ActivityController extends BaseController {
         }
         $varView['error_message'] = $res->error->message;
 
-        $this->layout->title = 'Create activity';
-        $this->layout->header = 'Create activity';
+        $this->layout->title = 'Create Activity';
+        $this->layout->header = 'Create Activity';
 
         $this->layout->content = View::make('activities/create/index', $varView);
         $this->layout->menu = "activity";
@@ -61,16 +62,43 @@ class ActivityController extends BaseController {
         return Response::json($res);
     }
 
-    /*
     public function getEdit($id)
     {
+        $res = DZApi::instance()->call("get", "/activity/".$id);
+        $post = json_decode(json_encode($res), true);
+
+        $this->layout->title = 'Create Activity';
+        $this->layout->header = 'Create Activity';
+
+        $this->layout->content = View::make('activities/create/index');
+        $this->layout->content->post = $post;
+        $this->layout->content->header = "Edit Activity";
+        $this->layout->menu = "activity";
 
     }
-    */
 
     public function postEdit($id)
     {
-        $res = DZApi::instance()->call('update', '/activity/'.$id, Input::all());
-        return Response::json($res);
+        try {
+            $res = DZApi::instance()->call("put", "/activity/{$id}", $_POST);
+            if(isset($res->error)){
+                throw new Exception($res->error->message);
+            }
+            if(Input::hasFile("picture")){
+                $tmp = new UploadTemp(Input::file('picture'));
+                $res = DZApi::instance()->call("post", "/activity/{$id}/editPicture", null, array("picture"=> $tmp->getRealPath()));
+                if(isset($res->error)){
+                    throw new Exception($res->error->message);
+                }
+            }
+            return Redirect::to("/activity");
+        }
+        catch (Exception $e) {
+            $this->layout->title = 'Edit Activity';
+            $this->layout->header = 'Edit Activity';
+            $this->layout->content = View::make('activities/create/index', array('post'=> $_POST, "error_message"=> $e->getMessage()));
+            $this->layout->content->header = "Edit Activity";
+            $this->layout->menu = "activity";
+        }
     }
 }

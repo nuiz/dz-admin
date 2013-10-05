@@ -14,16 +14,16 @@ class NewsController extends BaseController {
         $this->layout->header = View::make('news/header');
         $this->layout->menu = "news";
 
-        DZApi::instance()->setXDebugSession('PHPSTORM_DZ_SERVICE');
         $news = DZApi::instance()->call('get', '/news');
         $this->layout->content = View::make('news/index', array('news'=> $news->data));
     }
 
     public function getCreate()
     {
-        $this->layout->title = 'Create news';
-        $this->layout->header = 'Create news';
+        $this->layout->title = 'Create News';
+        $this->layout->header = 'Create News';
         $this->layout->content = View::make('news/create/index');
+        $this->layout->content->header = "Create News";
         $this->layout->menu = "news";
     }
 
@@ -32,17 +32,17 @@ class NewsController extends BaseController {
         $upload = null;
         $realpath = '';
         try {
-            if(Input::hasFile('picture')){
-                $picture = Input::file('picture');
+            if(Input::hasFile('media')){
+                $picture = Input::file('media');
                 $upload_name = str_replace('.', '', microtime(true)).'.'.$picture->getClientOriginalExtension();
                 $picture->move('upload_tmp', $upload_name);
                 $realpath = realpath('upload_tmp/'.$upload_name);
-                $upload = array('picture'=> $realpath);
+                $upload = array('media'=> $realpath);
                 chmod('upload_tmp/'.$upload_name, 0777);
             }
             $post = Input::all();
-            if(isset($post['picture'])){
-                unset($post['picture']);
+            if(isset($post['media'])){
+                unset($post['media']);
             }
             $res = DZApi::instance()->call('post', '/news', $post, $upload);
             if(!is_null($upload)){
@@ -52,14 +52,53 @@ class NewsController extends BaseController {
                 return Redirect::to('news');
             }
             $this->layout->menu = "news";
-            $this->layout->title = 'Create news';
-            $this->layout->header = 'Create news';
+            $this->layout->title = 'Create News';
+            $this->layout->header = 'Create News';
             $this->layout->content = View::make('news/create/index', array('attr'=> $post, 'error'=> $res->error->message));
+            $this->layput->content->header = "Create News";
         }
         catch (Exception $e) {
             if(isset($upload_name))
                 @unlink('upload_tmp/'.$upload_name);
             throw $e;
+        }
+    }
+
+    public function getEdit($id)
+    {
+        $newsData = DZApi::instance()->call("get", "/news/{$id}");
+        $this->layout->title = 'Edit news';
+        $this->layout->header = 'Edit news';
+        $this->layout->content = View::make('news/create/index', array('post'=> json_decode(json_encode($newsData), true)));
+        $this->layout->content->header = "Edit News";
+        $this->layout->menu = "news";
+    }
+
+    public function postEdit($id)
+    {
+        try {
+            $res = DZApi::instance()->call("put", "/news/{$id}", $_POST);
+            if(isset($res->error)){
+                throw new Exception($res->error->message);
+            }
+            if(Input::hasFile("media")){
+                $tmp = new UploadTemp(Input::file('media'));
+                $res = DZApi::instance()->call("post", "/news/{$id}/editMedia", null, array("media"=> $tmp->getRealPath()));
+                if(isset($res->error)){
+                    throw new Exception($res->error->message);
+                }
+            }
+            return Redirect::to('news');
+        }
+        catch (Exception $e) {
+            $this->layout->title = 'Edit news';
+            $this->layout->header = 'Edit news';
+            $this->layout->content = View::make('news/create/index', array('post'=> $_POST, "error_message"=> $e->getMessage()));
+            $this->layout->content->header = "Edit News";
+            $this->layout->menu = "news";
+        }
+        if(isset($tmp)){
+            $tmp->deleteTemp();
         }
     }
 

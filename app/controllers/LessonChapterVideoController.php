@@ -16,18 +16,19 @@ class LessonChapterVideoController extends BaseController {
         $videos = DZApi::instance()->call('get', "/lesson/{$lesson_id}/chapter/{$chapter_id}/video");
 
         $this->layout->menu = "lesson";
-        $this->layout->title = "Lesson >> Chapter >> Video";
+        $this->layout->title = "Video";
         $this->layout->header = View::make('lessons/chapters/videos/header', array('lesson'=> $lesson, 'chapter'=> $chapter));
         $this->layout->content = View::make('lessons/chapters/videos/index', array('videos'=> $videos->data, 'lesson'=> $lesson, 'chapter'=> $chapter));
     }
 
     public function getCreate($lesson_id, $chapter_id)
     {
-        $this->layout->title = "Lesson >> Chapter >> Create Video";
-        $this->layout->header = "Lesson >> Chapter >> Create Video";
+        $this->layout->title = "Create Video";
+        $this->layout->header = "Create Video";
         $this->layout->menu = "lesson";
 
         $this->layout->content = View::make('lessons/chapters/videos/create/index');
+        $this->layout->content->header = "Create Video";
     }
 
     public function postCreate($lesson_id, $chapter_id)
@@ -38,10 +39,8 @@ class LessonChapterVideoController extends BaseController {
             @ini_set( 'max_execution_time', '300' );
 
             $varView = array();
-            $post = Input::all();
-            if(isset($post['video'])){
-                unset($post['video']);
-            }
+            $post = $_POST;
+
             $varView['post'] = $post;
             if(Input::hasFile('video')){
                 $videoFile = Input::file('video');
@@ -64,11 +63,12 @@ class LessonChapterVideoController extends BaseController {
                 $varView['error_message'] = 'require file video upload';
             }
 
-            $this->layout->title = "Lesson >> Chapter >> Create Video";
-            $this->layout->header = "Lesson >> Chapter >> Create Video";
+            $this->layout->title = "Create Video";
+            $this->layout->header = "Create Video";
             $this->layout->menu = "lesson";
 
             $this->layout->content = View::make('lessons/chapters/videos/create/index', $varView);
+            $this->layout->content->header = "Create Video";
         }
         catch (Exception $e){
             if(isset($bufferName))
@@ -79,19 +79,57 @@ class LessonChapterVideoController extends BaseController {
 
     public function getDelete($lesson_id, $chapter_id, $id)
     {
-        DZApi::instance()->setXDebugSession('PHPSTORM_DZ_SERVICE');
-        $news = DZApi::instance()->call('delete', "/lesson/{$lesson_id}/chapter/{$chapter_id}/video/{$id}");
-
-        return Response::json($news);
+        $res = DZApi::instance()->call('delete', "/lesson/{$lesson_id}/chapter/{$chapter_id}/video/{$id}");
+        return Response::json($res);
     }
 
     public function getEdit($lesson_id, $chapter_id, $id)
     {
+        $res = DZApi::instance()->call('get', "/lesson/{$lesson_id}/chapter/{$chapter_id}/video/{$id}");
 
+        $varView['post'] = json_decode(json_encode($res), true);
+
+        $this->layout->title = "Edit Video";
+        $this->layout->header = "Edit Video";
+        $this->layout->menu = "lesson";
+
+        $this->layout->content = View::make('lessons/chapters/videos/create/index', $varView);
+        $this->layout->content->header = "Edit Video";
     }
 
     public function postEdit($lesson_id, $chapter_id, $id)
     {
+        $post = $_POST;
+        $varView = array('post'=> $post);
+        $uploads = null;
 
+        try {
+            $res = DZApi::instance()->call("put", "/lesson/{$lesson_id}/chapter/{$chapter_id}/video/{$id}", $post);
+            if(isset($res->error)){
+                throw new Exception($res->error->message);
+            }
+
+            if(Input::hasFile('video')){
+                $tmp = new UploadTemp(Input::file("video"));
+                $res = DZApi::instance()->call("post", "/lesson/{$lesson_id}/chapter/{$chapter_id}/video/{$id}/editVideo", null, array("video"=> $tmp->getRealPath()));
+            }
+
+            if(isset($res->error))
+            {
+                throw new Exception($res->error->message);
+            }
+
+            return Redirect::to("lesson/{$lesson_id}/chapter/{$chapter_id}/video");
+        }
+        catch (Exception $e) {
+            $varView['error_message'] = $e->getMessage();
+
+            $this->layout->title = "Edit Video";
+            $this->layout->header = "Edit Video";
+            $this->layout->menu = "lesson";
+
+            $this->layout->content = View::make('lessons/chapters/videos/create/index', $varView);
+            $this->layout->content->header = "Edit Video";
+        }
     }
 }

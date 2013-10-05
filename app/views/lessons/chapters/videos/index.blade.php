@@ -14,6 +14,7 @@
         <tr>
             <th>id</th>
             <th>name</th>
+            <th>type</th>
             <th>video</th>
             <th>description</th>
             <th>edit</th>
@@ -23,6 +24,7 @@
         <tr>
             <td>{{ $video->id }}</td>
             <td>{{ $video->name }}</td>
+            <td>@if($video->is_public==1) public @else private @endif</td>
             <td><a href="{{ $video->link }}" class="glyphicon glyphicon-facetime-video"></a></td>
             <td>{{ nl2br($video->description) }}</td>
             <td><a class="glyphicon glyphicon-edit" href="{{ URL::to('lesson/'.$lesson->id.'/chapter/'.$chapter->id.'/video/edit/'.$video->id) }}"></a></td>

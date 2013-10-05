@@ -20,7 +20,9 @@
 <form class="add-showcase-form text-center create-form" style="padding: 10px;">
     <label>youube id</label>
     <input type="text" name="youtube_id"
-    @if(@$post['youtube_id']) value="{{ $post['youtube_id }}" @endif
+    @if(@$post['youtube_id'])
+        value="{{ $post['youtube_id'] }}"
+    @endif
     >
     <button type="submit" class="btn btn-primary">add</button>
     @if(@$error_message)

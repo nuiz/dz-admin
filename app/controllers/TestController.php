@@ -10,12 +10,11 @@
 class TestController extends Controller {
     public function getIndex()
     {
-        $res = DZApi::instance()->call('put', '/test/1', array('a'=> 2, 'b'=> '4sss'));
-        return Response::json($res);
-    }
-
-    public function putIndex()
-    {
-
+        $res = Response::json(array('a'=> 'b', 'c'=> 'd'));
+        App::after(function($req, $res){
+            echo PHP_EOL;
+            echo 'asdasd';
+        });
+        $res->send();
     }
 }

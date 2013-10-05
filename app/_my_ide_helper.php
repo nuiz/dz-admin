@@ -14,3 +14,5 @@ Class DZApi extends DZApi\DZApi {
         return \DZApi\DZApi::instance();
     }
 }
+
+class UploadTemp extends DZApi\UploadTemp {}

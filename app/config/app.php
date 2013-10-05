@@ -26,7 +26,8 @@ return array(
 	|
 	*/
 
-	'url' => 'http://61.19.147.72/admin',
+	//'url' => 'http://61.19.147.72/admin',
+    'url' => 'http://localhost/dz-admin',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -179,7 +180,8 @@ return array(
 		'Validator'       => 'Illuminate\Support\Facades\Validator',
 		'View'            => 'Illuminate\Support\Facades\View',
 
-        'DZApi'           => 'DZApi\DZApi'
+        'DZApi'           => 'DZApi\DZApi',
+        'UploadTemp'      => 'DZApi\UploadTemp'
 	),
 
 );

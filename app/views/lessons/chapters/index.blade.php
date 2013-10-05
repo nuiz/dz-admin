@@ -22,14 +22,15 @@
         @foreach($chapters as $chapter)
         <tr>
             <td>{{ $chapter->id }}</td>
-            <td>@if(@$chapter->picture->id)
+            <td>{{ $chapter->name }}</td>
+            <td>
+                @if(@$chapter->picture->id)
                 <a href="{{ $chapter->picture->link }}" class="glyphicon glyphicon-picture"></a>
                 @endif
             </td>
-            <td>{{ $chapter->name }}</td>
             <td>{{ $chapter->description }}</td>
             <td><a href="{{ URL::to('lesson/'.$chapter->lesson_id.'/chapter/'.$chapter->id.'/video') }}">{{ $chapter->video_length }} videos</a></td>
-            <td><a class="glyphicon glyphicon-remove edit-button" href="{{ URL::to('lesson/'.$lesson->id.'/chapter/edit/'.$chapter->id) }}"></a></td>
+            <td><a class="glyphicon glyphicon-edit edit-button" href="{{ URL::to('lesson/'.$lesson->id.'/chapter/edit/'.$chapter->id) }}"></a></td>
             <td><a class="glyphicon glyphicon-remove del-button" href="{{ URL::to('lesson/'.$lesson->id.'/chapter/delete/'.$chapter->id) }}"></a></td>
         </tr>
         @endforeach

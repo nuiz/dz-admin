@@ -68,3 +68,17 @@ a.glyphicon {
 i.glyphicon {
     color: inherit;
 }
+
+/* form style */
+textarea {
+    height: 300px;
+    resize:none;
+}
+
+.field-img img, field-video video {
+    width: 100%;
+    height: auto;
+}
+.field-img .menu {
+
+}

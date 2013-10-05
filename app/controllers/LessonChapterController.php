@@ -27,6 +27,7 @@ class LessonChapterController extends BaseController {
         $this->layout->menu = "lesson";
 
         $this->layout->content = View::make('lessons/chapters/create/index');
+        $this->layout->content->header = "Create Group";
     }
 
     public function postCreate($lesson_id)
@@ -57,6 +58,41 @@ class LessonChapterController extends BaseController {
         $this->layout->menu = "lesson";
 
         $this->layout->content = View::make('lessons/chapters/create/index', $varView);
+    }
+
+    public function getEdit($lesson_id, $id)
+    {
+        $data = DZApi::instance()->call("get", "/lesson/{$lesson_id}/chapter/{$id}");
+        $this->layout->title = 'Edit Chapter';
+        $this->layout->header = 'Edit Chapter';
+        $this->layout->content = View::make('lessons/chapters/create/index', array('post'=> json_decode(json_encode($data), true)));
+        $this->layout->content->header = "Edit Chapter";
+        $this->layout->menu = "lesson";
+    }
+
+    public function postEdit($lesson_id, $id)
+    {
+        try {
+            $res = DZApi::instance()->call("put", "/lesson/{$lesson_id}/chapter/{$id}", $_POST);
+            if(isset($res->error)){
+                throw new Exception($res->error->message);
+            }
+            if(Input::hasFile("picture")){
+                $tmp = new UploadTemp(Input::file('picture'));
+                $res = DZApi::instance()->call("post", "/lesson/{$lesson_id}/chapter/{$id}/editPicture", null, array("picture"=> $tmp->getRealPath()));
+                if(isset($res->error)){
+                    throw new Exception($res->error->message);
+                }
+            }
+            return Redirect::to("/lesson/{$lesson_id}/chapter");
+        }
+        catch (Exception $e) {
+            $this->layout->title = 'Edit Chapter';
+            $this->layout->header = 'Edit Chapter';
+            $this->layout->content = View::make('lessons/chapters/create/index', array('post'=> $_POST, "error_message"=> $e->getMessage()));
+            $this->layout->content->header = "Edit Chapter";
+            $this->layout->menu = "lesson";
+        }
     }
 
     public function getDelete($lesson_id, $id)

@@ -15,7 +15,6 @@ class ClassesGroupUserController extends BaseController {
 
         $result = DZApi::instance()->call('get', "/class/{$class_id}/group/{$group_id}/user", array('import'=> 'false'));
 
-
         $this->layout->menu = "class";
         $this->layout->title = 'Class >> Group >> User';
         $this->layout->header = View::make('classes/groups/users/header', array('classed'=> $classed, 'group'=> $group));

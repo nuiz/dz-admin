@@ -1,0 +1,15 @@
+route:post news/{id}/editMedia
+
+update put,path ใส่ลบ media ลงไปด้วย News@editMedia
+News@update >>> deleteMedia parameter
+
+activity object
+{
+	int length,
+	array data[
+		list object: { int length, array data }
+	]
+}
+
+ตัวแปร
+deviceToken

@@ -25,7 +25,7 @@
             <td><img src="{{ $lesson->logo_link }}" height="32"></td>
             <td class="lesson-color">{{ $lesson->color }}</td>
             <td>{{ $lesson->name }}</td>
-            <td><a href="{{ URL::to('lesson/'.$lesson->id.'/chapter') }}">{{ $lesson->chapter_length }} capters</a></td>
+            <td><a href="{{ URL::to('lesson/'.$lesson->id.'/chapter') }}">{{ $lesson->chapter_length }} chapters</a></td>
             <td><a href="{{ URL::to('lesson/edit/'.$lesson->id) }}" class="glyphicon glyphicon-edit edit-button"></a></td>
             <td><a href="{{ URL::to('lesson/delete/'.$lesson->id) }}" class="glyphicon glyphicon-remove del-button"></a></td>
         </tr>
