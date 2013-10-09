@@ -11,7 +11,12 @@ class ActivityController extends BaseController {
     public function getIndex()
     {
         $this->layout->title = 'Activity';
-        $this->layout->header = View::make('activities/header');
+        $this->layout->header = View::make('layouts/header', array(
+            'breadcrumbs'=> array(
+                "activity" => URL::to('activity')
+            ),
+            'add'=> URL::to("activity/create")
+        ));
 
         $res = DZApi::instance()->call('get', '/activity');
         $this->layout->content = View::make('activities/index', array('activities'=> $res->data));
@@ -21,7 +26,12 @@ class ActivityController extends BaseController {
     public function getCreate()
     {
         $this->layout->title = 'Create Activity';
-        $this->layout->header = 'Create Activity';
+        $this->layout->header = View::make('layouts/header', array(
+            'breadcrumbs'=> array(
+                "activity" => URL::to('activity')
+            ),
+            'add'=> URL::to("activity/create")
+        ));
 
         $this->layout->content = View::make('activities/create/index');
         $this->layout->content->header = "Create Activity";
@@ -30,30 +40,35 @@ class ActivityController extends BaseController {
 
     public function postCreate()
     {
-        $post = Input::all();
-        $varView = array('post'=> $post);
+        $varView = array('post'=> $_POST);
         $uploads = null;
 
         if(Input::hasFile('picture')){
-            $picFile = Input::file('picture');
-            $upload_name = str_replace('.', '', microtime(true)).'.'.$picFile->getClientOriginalExtension();
-            $picFile->move('upload_tmp', $upload_name);
-            chmod("upload_tmp/".$upload_name, "0777");
-
-            $uploads = array('picture'=> realPath("upload_tmp/".$upload_name));
+            $tmp = new UploadTemp(Input::file('picture'));
+            $uploads = array('picture'=> realPath($tmp->getRealPath()));
         }
 
-        $res = DZApi::instance()->call('post', '/activity', $post, $uploads);
+        $res = DZApi::instance()->call('post', '/activity', $_POST, $uploads);
         if(!isset($res->error)){
             return Redirect::to('activity');
         }
         $varView['error_message'] = $res->error->message;
 
         $this->layout->title = 'Create Activity';
-        $this->layout->header = 'Create Activity';
+        $this->layout->header = View::make('layouts/header', array(
+            'breadcrumbs'=> array(
+                "activity" => URL::to('activity')
+            ),
+            'add'=> URL::to("activity/create")
+        ));
 
         $this->layout->content = View::make('activities/create/index', $varView);
+        $this->layout->content->header = "Create Activity";
         $this->layout->menu = "activity";
+
+        if(isset($tmp)){
+            $tmp->deleteTemp();
+        }
     }
 
     public function getDelete($id)
@@ -68,7 +83,12 @@ class ActivityController extends BaseController {
         $post = json_decode(json_encode($res), true);
 
         $this->layout->title = 'Create Activity';
-        $this->layout->header = 'Create Activity';
+        $this->layout->header = View::make('layouts/header', array(
+            'breadcrumbs'=> array(
+                "activity" => URL::to('activity')
+            ),
+            'add'=> URL::to("activity/create")
+        ));
 
         $this->layout->content = View::make('activities/create/index');
         $this->layout->content->post = $post;
@@ -95,7 +115,12 @@ class ActivityController extends BaseController {
         }
         catch (Exception $e) {
             $this->layout->title = 'Edit Activity';
-            $this->layout->header = 'Edit Activity';
+            $this->layout->header = View::make('layouts/header', array(
+                'breadcrumbs'=> array(
+                    "activity" => URL::to('activity')
+                ),
+                'add'=> URL::to("activity/create")
+            ));
             $this->layout->content = View::make('activities/create/index', array('post'=> $_POST, "error_message"=> $e->getMessage()));
             $this->layout->content->header = "Edit Activity";
             $this->layout->menu = "activity";

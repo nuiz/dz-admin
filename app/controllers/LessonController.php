@@ -11,7 +11,12 @@ class LessonController extends BaseController {
     public function getIndex()
     {
         $this->layout->title = 'Lesson';
-        $this->layout->header = View::make('lessons/header');
+        $this->layout->header = View::make('layouts/header', array(
+            'breadcrumbs'=> array(
+                "lesson" => URL::to('lesson')
+            ),
+            'add'=> URL::to("lesson/create")
+        ));
         $this->layout->menu = "lesson";
 
         $res = DZApi::instance()->call('get', '/lesson');
@@ -21,7 +26,12 @@ class LessonController extends BaseController {
     public function getCreate()
     {
         $this->layout->title = 'Create Lesson';
-        $this->layout->header = 'Create Lesson';
+        $this->layout->header = View::make('layouts/header', array(
+            'breadcrumbs'=> array(
+                "lesson" => URL::to('lesson')
+            ),
+            'add'=> URL::to("lesson/create")
+        ));
         $this->layout->menu = "lesson";
 
         $this->layout->content = View::make('lessons/create/index');
@@ -36,7 +46,12 @@ class LessonController extends BaseController {
         }
 
         $this->layout->title = 'Create Lesson';
-        $this->layout->header = 'Create Lesson';
+        $this->layout->header = View::make('layouts/header', array(
+            'breadcrumbs'=> array(
+                "lesson" => URL::to('lesson')
+            ),
+            'add'=> URL::to("lesson/create")
+        ));
         $this->layout->menu = "lesson";
 
         $this->layout->content = View::make('lessons/create/index', array('post'=> Input::all(), 'error_message'=> $res->error->message));
@@ -55,7 +70,12 @@ class LessonController extends BaseController {
         $res = DZApi::instance()->call("get", "/lesson/{$id}");
 
         $this->layout->title = 'Edit Lesson';
-        $this->layout->header = 'Edit Lesson';
+        $this->layout->header = View::make('layouts/header', array(
+            'breadcrumbs'=> array(
+                "lesson" => URL::to('lesson')
+            ),
+            'add'=> URL::to("lesson/create")
+        ));
         $this->layout->menu = "lesson";
 
         $this->layout->content = View::make('lessons/create/index', array('post'=> json_decode(json_encode($res), true)));
@@ -73,7 +93,12 @@ class LessonController extends BaseController {
         $varView['error_message'] = $res->message->error;
 
         $this->layout->title = 'Edit Lesson';
-        $this->layout->header = 'Edit Lesson';
+        $this->layout->header = View::make('layouts/header', array(
+            'breadcrumbs'=> array(
+                "lesson" => URL::to('lesson')
+            ),
+            'add'=> URL::to("lesson/create")
+        ));
         $this->layout->menu = "lesson";
 
         $this->layout->content = View::make('lessons/create/index', $varView);

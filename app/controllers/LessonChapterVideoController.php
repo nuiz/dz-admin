@@ -17,14 +17,30 @@ class LessonChapterVideoController extends BaseController {
 
         $this->layout->menu = "lesson";
         $this->layout->title = "Video";
-        $this->layout->header = View::make('lessons/chapters/videos/header', array('lesson'=> $lesson, 'chapter'=> $chapter));
+        $this->layout->header = View::make('layouts/header', array(
+            'breadcrumbs'=> array(
+                'lesson' => URL::to('lesson'),
+                $lesson->name => URL::to("lesson/{$lesson_id}/chapter"),
+                $chapter->name => URL::to("lesson/{$lesson_id}/chapter/{$chapter_id}/video")
+            ),
+            'add'=> URL::to("lesson/{$lesson_id}/chapter/{$chapter_id}/video/create")
+        ));
         $this->layout->content = View::make('lessons/chapters/videos/index', array('videos'=> $videos->data, 'lesson'=> $lesson, 'chapter'=> $chapter));
     }
 
     public function getCreate($lesson_id, $chapter_id)
     {
         $this->layout->title = "Create Video";
-        $this->layout->header = "Create Video";
+        $lesson = DZApi::instance()->call('get', "/lesson/{$lesson_id}");
+        $chapter = DZApi::instance()->call('get', "/lesson/{$lesson_id}/chapter/{$chapter_id}");
+        $this->layout->header = View::make('layouts/header', array(
+            'breadcrumbs'=> array(
+                'lesson' => URL::to('lesson'),
+                $lesson->name => URL::to("lesson/{$lesson_id}/chapter"),
+                $chapter->name => URL::to("lesson/{$lesson_id}/chapter/{$chapter_id}/video")
+            ),
+            'add'=> URL::to("lesson/{$lesson_id}/chapter/{$chapter_id}/video/create")
+        ));
         $this->layout->menu = "lesson";
 
         $this->layout->content = View::make('lessons/chapters/videos/create/index');
@@ -64,7 +80,16 @@ class LessonChapterVideoController extends BaseController {
             }
 
             $this->layout->title = "Create Video";
-            $this->layout->header = "Create Video";
+            $lesson = DZApi::instance()->call('get', "/lesson/{$lesson_id}");
+            $chapter = DZApi::instance()->call('get', "/lesson/{$lesson_id}/chapter/{$chapter_id}");
+            $this->layout->header = View::make('layouts/header', array(
+                'breadcrumbs'=> array(
+                    'lesson' => URL::to('lesson'),
+                    $lesson->name => URL::to("lesson/{$lesson_id}/chapter"),
+                    $chapter->name => URL::to("lesson/{$lesson_id}/chapter/{$chapter_id}/video")
+                ),
+                'add'=> URL::to("lesson/{$lesson_id}/chapter/{$chapter_id}/video/create")
+            ));
             $this->layout->menu = "lesson";
 
             $this->layout->content = View::make('lessons/chapters/videos/create/index', $varView);
@@ -90,7 +115,16 @@ class LessonChapterVideoController extends BaseController {
         $varView['post'] = json_decode(json_encode($res), true);
 
         $this->layout->title = "Edit Video";
-        $this->layout->header = "Edit Video";
+        $lesson = DZApi::instance()->call('get', "/lesson/{$lesson_id}");
+        $chapter = DZApi::instance()->call('get', "/lesson/{$lesson_id}/chapter/{$chapter_id}");
+        $this->layout->header = View::make('layouts/header', array(
+            'breadcrumbs'=> array(
+                'lesson' => URL::to('lesson'),
+                $lesson->name => URL::to("lesson/{$lesson_id}/chapter"),
+                $chapter->name => URL::to("lesson/{$lesson_id}/chapter/{$chapter_id}/video")
+            ),
+            'add'=> URL::to("lesson/{$lesson_id}/chapter/{$chapter_id}/video/create")
+        ));
         $this->layout->menu = "lesson";
 
         $this->layout->content = View::make('lessons/chapters/videos/create/index', $varView);
@@ -125,7 +159,16 @@ class LessonChapterVideoController extends BaseController {
             $varView['error_message'] = $e->getMessage();
 
             $this->layout->title = "Edit Video";
-            $this->layout->header = "Edit Video";
+            $lesson = DZApi::instance()->call('get', "/lesson/{$lesson_id}");
+            $chapter = DZApi::instance()->call('get', "/lesson/{$lesson_id}/chapter/{$chapter_id}");
+            $this->layout->header = View::make('layouts/header', array(
+                'breadcrumbs'=> array(
+                    'lesson' => URL::to('lesson'),
+                    $lesson->name => URL::to("lesson/{$lesson_id}/chapter"),
+                    $chapter->name => URL::to("lesson/{$lesson_id}/chapter/{$chapter_id}/video")
+                ),
+                'add'=> URL::to("lesson/{$lesson_id}/chapter/{$chapter_id}/video/create")
+            ));
             $this->layout->menu = "lesson";
 
             $this->layout->content = View::make('lessons/chapters/videos/create/index', $varView);

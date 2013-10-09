@@ -10,9 +10,14 @@
 class ClassesController extends BaseController {
     public function getIndex()
     {
-        $this->layout->title = 'Class';
-        $this->layout->header = View::make('classes/header');
-        $this->layout->menu = 'class';
+        $this->layout->title = 'all class';
+        $this->layout->header = View::make('layouts/header', array(
+            'breadcrumbs'=> array(
+                'class'=> URL::to('class')
+            ),
+            'add'=> URL::to('class/create')
+        ));
+        $this->layout->menu = 'all class';
 
         $classes = DZApi::instance()->call('get', '/class');
         $this->layout->content = View::make('classes/index', array('classes'=> $classes->data));
@@ -21,7 +26,12 @@ class ClassesController extends BaseController {
     public function getCreate()
     {
         $this->layout->title = 'Create Class';
-        $this->layout->header = 'Create Class';
+        $this->layout->header = View::make('layouts/header', array(
+            'breadcrumbs'=> array(
+                'class'=> URL::to('class')
+            ),
+            'add'=> URL::to('class/create')
+        ));
         $this->layout->content = View::make('classes/create/index');
         $this->layout->content->headForm = "Create Class";
         $this->layout->menu = "class";
@@ -38,7 +48,12 @@ class ClassesController extends BaseController {
         }
         $variables['error'] = $response->error->message;
         $this->layout->title = 'Create Class';
-        $this->layout->header = View::make('classes/header');
+        $this->layout->header = View::make('layouts/header', array(
+            'breadcrumbs'=> array(
+                'class'=> URL::to('class')
+            ),
+            'add'=> URL::to('class/create')
+        ));
 
         $this->layout->content = View::make('classes/create/index', $variables);
         $this->layout->content->headForm = 'Create Class';
@@ -51,7 +66,12 @@ class ClassesController extends BaseController {
             throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('not found class');
         }
         $this->layout->title = 'Edit Class';
-        $this->layout->header = View::make('classes/header');
+        $this->layout->header = View::make('layouts/header', array(
+            'breadcrumbs'=> array(
+                'class'=> URL::to('class')
+            ),
+            'add'=> URL::to('class/create')
+        ));
         $this->layout->content = View::make('classes/create/index');
         $this->layout->content->post = $classed;
         $this->layout->content->headForm = 'Edit Class';
@@ -64,7 +84,12 @@ class ClassesController extends BaseController {
             Return Redirect::to('class');
         }
         $this->layout->title = 'Edit Class';
-        $this->layout->header = View::make('classes/header');
+        $this->layout->header = View::make('layouts/header', array(
+            'breadcrumbs'=> array(
+                'class'=> URL::to('class')
+            ),
+            'add'=> URL::to('class/create')
+        ));
         $this->layout->content = View::make('classes/create/index');
         $this->layout->content->post = Input::all();
         $this->layout->content->headForm = 'Edit Class';

@@ -12,7 +12,13 @@ class LessonChapterController extends BaseController {
     {
         $lesson = DZApi::instance()->call('get', "/lesson/{$lesson_id}");
         $this->layout->title = 'Lesson >> Chapter';
-        $this->layout->header = View::make('lessons/chapters/header', array('lesson'=> $lesson));
+        $this->layout->header = View::make('layouts/header', array(
+            'breadcrumbs'=> array(
+                'lesson' => URL::to('lesson'),
+                $lesson->name => URL::to("lesson/{$lesson_id}/chapter")
+            ),
+            'add'=> URL::to("lesson/{$lesson_id}/chapter/create")
+        ));
 
         $this->layout->menu = "lesson";
         $res = DZApi::instance()->call('get', "/lesson/{$lesson_id}/chapter");
@@ -21,13 +27,19 @@ class LessonChapterController extends BaseController {
 
     public function getCreate($lesson_id)
     {
-        //$lesson = DZApi::instance()->call('get', "/lesson/{$lesson_id}");
+        $lesson = DZApi::instance()->call('get', "/lesson/{$lesson_id}");
         $this->layout->title = 'Lesson >> Create Chapter';
-        $this->layout->header = 'Lesson >> Create Chapter';
+        $this->layout->header = View::make('layouts/header', array(
+            'breadcrumbs'=> array(
+                'lesson' => URL::to('lesson'),
+                $lesson->name => URL::to("lesson/{$lesson_id}/chapter")
+            ),
+            'add'=> URL::to("lesson/{$lesson_id}/chapter/create")
+        ));
         $this->layout->menu = "lesson";
 
         $this->layout->content = View::make('lessons/chapters/create/index');
-        $this->layout->content->header = "Create Group";
+        $this->layout->content->header = "Create Chapter";
     }
 
     public function postCreate($lesson_id)
@@ -54,18 +66,34 @@ class LessonChapterController extends BaseController {
         $varView['error_message'] = $res->error->message;
 
         $this->layout->title = 'Lesson >> Create Chapter';
-        $this->layout->header = 'Lesson >> Create Chapter';
-        $this->layout->menu = "lesson";
 
+        $lesson = DZApi::instance()->call('get', "/lesson/{$lesson_id}");
+        $this->layout->header = View::make('layouts/header', array(
+            'breadcrumbs'=> array(
+                'lesson' => URL::to('lesson'),
+                $lesson->name => URL::to("lesson/{$lesson_id}/chapter")
+            ),
+            'add'=> URL::to("lesson/{$lesson_id}/chapter/create")
+        ));
+        $this->layout->menu = "lesson";
         $this->layout->content = View::make('lessons/chapters/create/index', $varView);
+        $this->layout->content->header = "Create Chapter";
     }
 
     public function getEdit($lesson_id, $id)
     {
         $data = DZApi::instance()->call("get", "/lesson/{$lesson_id}/chapter/{$id}");
         $this->layout->title = 'Edit Chapter';
-        $this->layout->header = 'Edit Chapter';
-        $this->layout->content = View::make('lessons/chapters/create/index', array('post'=> json_decode(json_encode($data), true)));
+
+
+        $lesson = DZApi::instance()->call('get', "/lesson/{$lesson_id}");
+        $this->layout->header = View::make('layouts/header', array(
+            'breadcrumbs'=> array(
+                'lesson' => URL::to('lesson'),
+                $lesson->name => URL::to("lesson/{$lesson_id}/chapter")
+            ),
+            'add'=> URL::to("lesson/{$lesson_id}/chapter/create")
+        ));        $this->layout->content = View::make('lessons/chapters/create/index', array('post'=> json_decode(json_encode($data), true)));
         $this->layout->content->header = "Edit Chapter";
         $this->layout->menu = "lesson";
     }
@@ -88,7 +116,15 @@ class LessonChapterController extends BaseController {
         }
         catch (Exception $e) {
             $this->layout->title = 'Edit Chapter';
-            $this->layout->header = 'Edit Chapter';
+
+            $lesson = DZApi::instance()->call('get', "/lesson/{$lesson_id}");
+            $this->layout->header = View::make('layouts/header', array(
+                'breadcrumbs'=> array(
+                    'lesson' => URL::to('lesson'),
+                    $lesson->name => URL::to("lesson/{$lesson_id}/chapter")
+                ),
+                'add'=> URL::to("lesson/{$lesson_id}/chapter/create")
+            ));
             $this->layout->content = View::make('lessons/chapters/create/index', array('post'=> $_POST, "error_message"=> $e->getMessage()));
             $this->layout->content->header = "Edit Chapter";
             $this->layout->menu = "lesson";

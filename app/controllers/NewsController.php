@@ -11,7 +11,12 @@ class NewsController extends BaseController {
     public function getIndex()
     {
         $this->layout->title = "News";
-        $this->layout->header = View::make('news/header');
+        $this->layout->header = View::make('layouts/header', array(
+            'breadcrumbs'=> array(
+                "news" => URL::to('news'),
+            ),
+            'add'=> URL::to("news/create")
+        ));
         $this->layout->menu = "news";
 
         $news = DZApi::instance()->call('get', '/news');
@@ -21,7 +26,12 @@ class NewsController extends BaseController {
     public function getCreate()
     {
         $this->layout->title = 'Create News';
-        $this->layout->header = 'Create News';
+        $this->layout->header = View::make('layouts/header', array(
+            'breadcrumbs'=> array(
+                "news" => URL::to('news'),
+            ),
+            'add'=> URL::to("news/create")
+        ));
         $this->layout->content = View::make('news/create/index');
         $this->layout->content->header = "Create News";
         $this->layout->menu = "news";
@@ -53,7 +63,12 @@ class NewsController extends BaseController {
             }
             $this->layout->menu = "news";
             $this->layout->title = 'Create News';
-            $this->layout->header = 'Create News';
+            $this->layout->header = View::make('layouts/header', array(
+                'breadcrumbs'=> array(
+                    "news" => URL::to('news'),
+                ),
+                'add'=> URL::to("news/create")
+            ));
             $this->layout->content = View::make('news/create/index', array('attr'=> $post, 'error'=> $res->error->message));
             $this->layput->content->header = "Create News";
         }
@@ -68,7 +83,12 @@ class NewsController extends BaseController {
     {
         $newsData = DZApi::instance()->call("get", "/news/{$id}");
         $this->layout->title = 'Edit news';
-        $this->layout->header = 'Edit news';
+        $this->layout->header = View::make('layouts/header', array(
+            'breadcrumbs'=> array(
+                "news" => URL::to('news'),
+            ),
+            'add'=> URL::to("news/create")
+        ));
         $this->layout->content = View::make('news/create/index', array('post'=> json_decode(json_encode($newsData), true)));
         $this->layout->content->header = "Edit News";
         $this->layout->menu = "news";
@@ -92,7 +112,12 @@ class NewsController extends BaseController {
         }
         catch (Exception $e) {
             $this->layout->title = 'Edit news';
-            $this->layout->header = 'Edit news';
+            $this->layout->header = View::make('layouts/header', array(
+                'breadcrumbs'=> array(
+                    "news" => URL::to('news'),
+                ),
+                'add'=> URL::to("news/create")
+            ));
             $this->layout->content = View::make('news/create/index', array('post'=> $_POST, "error_message"=> $e->getMessage()));
             $this->layout->content->header = "Edit News";
             $this->layout->menu = "news";
@@ -104,7 +129,6 @@ class NewsController extends BaseController {
 
     public function getDelete($id)
     {
-        DZApi::instance()->setXDebugSession('PHPSTORM_DZ_SERVICE');
         $news = DZApi::instance()->call('delete', '/news/'.$id);
 
         return Response::json($news);

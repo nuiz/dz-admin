@@ -12,7 +12,11 @@ class UserController extends BaseController {
     public function getIndex()
     {
         $this->layout->title = 'User Manager';
-        $this->layout->header = 'User Manager';
+        $this->layout->header = View::make('layouts/header', array(
+            "breadcrumbs"=> array(
+                "user" => URL::to("user")
+            )
+        ));
         $this->layout->menu = "user";
 
         DZApi::instance()->setXDebugSession('PHPSTORM_DZ_SERVICE');

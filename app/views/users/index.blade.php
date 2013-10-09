@@ -8,7 +8,6 @@
             <th>email</th>
             <th>ปะเภท</th>
             <th></th>
-            <th></th>
         </tr>
         @foreach($users as $user)
         <tr>
@@ -22,7 +21,6 @@
                     <a class="glyphicon glyphicon-circle-arrow-up upgrade-button" href="{{ URL::to('user/upgrade/'.$user->id) }}"></a>
                 @endif
             </td>
-            <td><a href="" class="glyphicon glyphicon-edit edit-button"></a></td>
             <td><a href="{{ URL::to('user/delete/'.$user->id) }}" class="glyphicon glyphicon-remove remove-button"></a></td>
         </tr>
         @endforeach

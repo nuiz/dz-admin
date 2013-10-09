@@ -7,5 +7,5 @@
  * To change this template use File | Settings | File Templates.
  */
 ?>
-Showcase
+<a href="{{ URL::to('showcase') }}">Showcase</a>
 <a href="" class="glyphicon glyphicon-plus-sign add-button"></a>

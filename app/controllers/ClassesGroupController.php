@@ -14,7 +14,13 @@ class ClassesGroupController extends BaseController {
         $groups = DZApi::instance()->call('get', '/class/'.$class_id.'/group');
 
         $this->layout->title = 'Group Manager';
-        $this->layout->header = View::make('classes/groups/header', array('classed'=> $classed));
+        $this->layout->header = View::make('layouts/header', array(
+            'breadcrumbs'=> array(
+                "class" => URL::to('class'),
+                $classed->name => URL::to("class/{$class_id}/group")
+            ),
+            'add'=> URL::to("class/{$class_id}/create")
+        ));
         $this->layout->content = View::make('classes/groups/index', array('classed'=> $classed, 'groups'=> $groups->data));
         $this->layout->menu = "class";
     }
@@ -30,7 +36,13 @@ class ClassesGroupController extends BaseController {
         $classed = DZApi::instance()->call('get', '/class/'.$class_id);
 
         $this->layout->title = 'Create Group';
-        $this->layout->header = 'Create Group';
+        $this->layout->header = View::make('layouts/header', array(
+            'breadcrumbs'=> array(
+                "class" => URL::to('class'),
+                $classed->name => URL::to("class/{$class_id}/group")
+            ),
+            'add'=> URL::to("class/{$class_id}/create")
+        ));
         $this->layout->content = View::make('classes/groups/create/index');
         $this->layout->content->header = "Create Group";
         $this->layout->menu = "class";
@@ -62,7 +74,15 @@ class ClassesGroupController extends BaseController {
         $varView['error_message'] = $response->error->message;
 
         $this->layout->title = 'Create Group';
-        $this->layout->header = 'Create Group';
+
+        $classed = DZApi::instance()->call('get', '/class/'.$class_id);
+        $this->layout->header = View::make('layouts/header', array(
+            'breadcrumbs'=> array(
+                "class" => URL::to('class'),
+                $classed->name => URL::to("class/{$class_id}/group")
+            ),
+            'add'=> URL::to("class/{$class_id}/create")
+        ));
         $this->layout->menu = "class";
 
         $this->layout->content = View::make('classes/groups/create/index', $varView);
@@ -73,7 +93,13 @@ class ClassesGroupController extends BaseController {
         $classed = DZApi::instance()->call('get', '/class/'.$class_id);
 
         $this->layout->title = 'Create Group';
-        $this->layout->header = 'Create Group';
+        $this->layout->header = View::make('layouts/header', array(
+            'breadcrumbs'=> array(
+                "class" => URL::to('class'),
+                $classed->name => URL::to("class/{$class_id}/group")
+            ),
+            'add'=> URL::to("class/{$class_id}/create")
+        ));
         $this->layout->content = View::make('classes/groups/create/index');
         $this->layout->menu = "class";
     }

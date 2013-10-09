@@ -12,7 +12,7 @@
 <head>
     <title>admin - {{ $title }}</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" >
     <!-- Bootstrap -->
     <link href="{{ URL::asset('css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
 
@@ -73,12 +73,14 @@ if (IS_IOS)
 $(function(){
     function setBodySize(){
         var allH = $(window).height();
-        var contentH = allH-88;
-        $('.main-body').height(contentH);
+        //var contentH = allH-88;
+        $('.main-body').height(window.innerHeight-88);
+        window.scrollTo(0,0);
+        //$('.main-body').height(contentH);
     }
     setBodySize();
 
-    window.onorientationchange = setBodySize();
+    window.onorientationchange = setBodySize;
 });
 </script>
 </body>
