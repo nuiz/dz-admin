@@ -43,9 +43,9 @@ class DZApi {
         switch ($method)
         {
             case "post":
-                $httpFul = \Httpful\Request::post($this->host.$url, $data, \Httpful\Mime::UPLOAD);
+                $httpFul = \Httpful\Request::post($this->host.$url, $data, \Httpful\Mime::FORM);
                 if(!is_null($files)){
-                    //$httpFul->sendsType(\Httpful\Mime::UPLOAD);
+                    $httpFul->sendsType(\Httpful\Mime::UPLOAD);
                     $httpFul->attach($files);
                 }
                 break;
@@ -72,7 +72,7 @@ class DZApi {
         if($this->xdebug_session!=false || true)
         {
             $this->xdebug_session = 'PHPSTORM_DZ_SERVICE';
-            $header['Cookie'] = "XDEBUG_SESSION=".$this->xdebug_session;
+            //$header['Cookie'] = "XDEBUG_SESSION=".$this->xdebug_session;
         }
         $httpFul->addHeaders($header);
         $this->last_response = $response = $httpFul->send();

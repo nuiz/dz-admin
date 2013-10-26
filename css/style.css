@@ -1,3 +1,11 @@
+a {
+    -webkit-tap-highlight-color: #FFEC62;
+}
+
+.fancybox-overlay {
+    -webkit-tap-highlight-color: none;
+}
+
 body {
     background: #4C5059;
     overflow: hidden;
@@ -17,10 +25,18 @@ body {
     line-height: 44px;
     text-align: center;
     font-size: 24px;
+
+    position: relative;
 }
 
 .header a {
     color: white;
+}
+
+.add-on-header {
+    position: absolute;
+    right: 10px;
+    top: 8px;
 }
 
 .header-2 {
@@ -64,10 +80,31 @@ body {
     font-weight: normal;
 }
 
+.dz-thumb {
+    width: 32px;
+    height: 32px;
+}
+
+.video-thumb {
+    width: 32px;
+    height: 32px;
+    position: relative;
+}
+
+.video-icon {
+    position: absolute;
+    left: 10px;
+}
+
 /* icon style */
 a.glyphicon {
     color: black;
 }
+/*
+a.glyphicon:hover {
+    background: #FFEC62;
+}
+*/
 
 i.glyphicon {
     color: inherit;
@@ -85,4 +122,88 @@ textarea {
 }
 .field-img .menu {
 
+}
+
+/* notification style */
+.notification-button {
+    position: absolute;
+    left: 10px;
+    top: 8px;
+}
+
+body {
+    overflow: hidden;
+}
+
+.notification-close {
+    position: absolute;
+    left: 10px;
+    top: 8px;
+}
+
+.notification-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: -100%;
+    top: 0;
+
+    background: #4C5059;
+
+    -webkit-transition: all 300ms;
+    transition: all 500ms;
+}
+
+.loading-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -32px;
+    margin-left: -32px;
+}
+
+.wrap {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+html {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+/* setting */
+.setting-close {
+    position: absolute;
+    right: 10px;
+    top: 8px;
+}
+
+
+.setting-button {
+    position: absolute;
+    right: 10px;
+    top: 8px;
+}
+
+.setting-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    right: -100%;
+    top: 0;
+
+    background: #4C5059;
+
+    -webkit-transition: all 300ms;
+    transition: all 500ms;
 }

@@ -10,17 +10,17 @@
 @section('content')
 
 <div style="background: white;">
-    <table class="table">
+    <table class="table table-bordered table-dz">
         <tr>
-            <th>id</th>
-            <th>ชื่อ</th>
-            <th>นามสกุล</th>
+            <th>username</th>
+            <th>name</th>
+            <th>surname</th>
             <th>email</th>
-            <th>นำออก</th>
+            <th>remove</th>
         </tr>
         @foreach($users as $user)
         <tr>
-            <td>{{ $user->id }}</td>
+            <td>{{ $user->username }}</td>
             <td>{{ $user->first_name }}</td>
             <td>{{ $user->last_name }}</td>
             <td>{{ $user->email }}</td>

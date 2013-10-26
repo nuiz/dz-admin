@@ -21,7 +21,7 @@
     <legend>{{ $header }}</legend>
     <div class="form-group">
         <label>name</label>
-        <input type="text" class="form-control" name="name" value="@if(@$post['name']){{ $post['name'] }}@endif">
+        <input type="text" id="input-name" class="form-control" name="name" value="@if(@$post['name']){{ $post['name'] }}@endif">
     </div>
     <div class="form-group field-media">
         <label>cover pic</label>
@@ -32,32 +32,57 @@
                 <img src="{{ $post['picture']['link'] }}" />
             </div>
             @else
-            <input type="file" class="form-control" name="picture">
+            <div class="media">
+                <input type="file" class="form-control" name="picture">
+            </div>
             @endif
         </div>
     </div>
     <div class="form-group">
         <label>start_time</label>
-        <input type="datetime-local" class="form-control" name="start_time" value="@if(@$post['start_time']){{ date("Y-m-d\TH:i", strtotime($post['start_time'])) }}@endif">
+        <input type="datetime-local" id="input-start_time" class="form-control" name="start_time" value="@if(@$post['start_time']){{ date("Y-m-d\TH:i", strtotime($post['start_time'])) }}@endif">
     </div>
     <div class="form-group">
         <label>message</label>
-        <textarea type="text" class="form-control" name="message">@if(@$post['message']){{ $post['message'] }}@endif</textarea>
+        <textarea type="text" class="form-control" id="input-message" name="message">@if(@$post['message']){{ $post['message'] }}@endif</textarea>
     </div>
     <button class="btn btn-primary" type="submit">Submit</button>
+    <button class="btn btn-info pull-right cancle-button">Reset</button>
     @if(@$error_message)
     <div class="alert alert-danger" style="margin-top: 20px;">{{ $error_message }}</div>
     @endif
 </form>
 <script type="text/javascript">
     $(function(){
-        $('.reupload-media').click(function(e){
+        var oldMedia = $('.media');
+        $('.field-media').delegate('.reupload-media', 'click', function(e){
             e.preventDefault();
             $('.media-block').html('<input type="file" class="form-control" name="picture">');
         });
-        $('.delete-media').click(function(e){
+        $('.field-media').delegate('.delete-media', 'click', function(e){
             e.preventDefault();
-            $('.field-media').html('<input type="hidden" name="deletePicture" value="yes">');
+            $('.media-block').html('<input type="hidden" name="deletePicture" value="yes">');
+            $('.field-media').hide();
+        });
+
+        var oldData = <?php echo isset($oldData)? json_encode($oldData): 'null'; ?>;
+        var inputName = $('#input-name');
+        var inputStartTime = $('#input-start_time');
+        var inputMessage = $('#input-message');
+        $('.cancle-button').click(function(e){
+            e.preventDefault();
+            if(oldData==null){
+                inputName.val("");
+                inputStartTime.val("");
+                inputMessage.val("");
+            }
+            else {
+                inputName.val(oldData.name);
+                inputMessage.val(oldData.message)
+                inputStartTime.val('<?php echo isset($oldData)? date("Y-m-d\TH:i", strtotime($oldData->start_time)): ""; ?>');
+                $('.media-block').html('').append(oldMedia);
+                $('.field-media').show();
+            }
         });
     });
 </script>

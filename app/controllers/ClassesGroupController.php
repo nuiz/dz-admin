@@ -16,12 +16,13 @@ class ClassesGroupController extends BaseController {
         $this->layout->title = 'Group Manager';
         $this->layout->header = View::make('layouts/header', array(
             'breadcrumbs'=> array(
-                "class" => URL::to('class'),
+                "Class" => URL::to('class'),
                 $classed->name => URL::to("class/{$class_id}/group")
             ),
-            'add'=> URL::to("class/{$class_id}/create")
+            'add'=> URL::to("class/{$class_id}/group/create")
         ));
         $this->layout->content = View::make('classes/groups/index', array('classed'=> $classed, 'groups'=> $groups->data));
+
         $this->layout->menu = "class";
     }
 
@@ -38,10 +39,10 @@ class ClassesGroupController extends BaseController {
         $this->layout->title = 'Create Group';
         $this->layout->header = View::make('layouts/header', array(
             'breadcrumbs'=> array(
-                "class" => URL::to('class'),
+                "Class" => URL::to('class'),
                 $classed->name => URL::to("class/{$class_id}/group")
             ),
-            'add'=> URL::to("class/{$class_id}/create")
+            'add'=> URL::to("class/{$class_id}/group/create")
         ));
         $this->layout->content = View::make('classes/groups/create/index');
         $this->layout->content->header = "Create Group";
@@ -50,22 +51,17 @@ class ClassesGroupController extends BaseController {
 
     public function postCreate($class_id)
     {
-        $post = $_POST;
-        $varView = array('post'=> $post);
+        $varView = array('post'=> $_POST);
         $uploads = null;
 
         if(Input::hasFile('video')){
-            $videoFile = Input::file('video');
-            $upload_name = str_replace('.', '', microtime(true)).'.'.$videoFile->getClientOriginalExtension();
-            $videoFile->move('upload_tmp', $upload_name);
-            chmod("upload_tmp/".$upload_name, "0777");
-
-            $uploads = array('video'=> realPath("upload_tmp/".$upload_name));
+            $tmp = new UploadTemp(Input::file("video"));
+            $uploads = array('video'=> $tmp->getRealPath());
         }
 
-        $response = DZApi::instance()->call("post", "/class/{$class_id}/group", $post, $uploads);
-        if(isset($bufferName))
-            @unlink('upload_tmp/'.$bufferName);
+        $response = DZApi::instance()->call("post", "/class/{$class_id}/group", $_POST, $uploads);
+        if(isset($tmp))
+            $tmp->deleteTemp();
 
         if(!isset($response->error))
         {
@@ -78,29 +74,81 @@ class ClassesGroupController extends BaseController {
         $classed = DZApi::instance()->call('get', '/class/'.$class_id);
         $this->layout->header = View::make('layouts/header', array(
             'breadcrumbs'=> array(
-                "class" => URL::to('class'),
+                "Class" => URL::to('class'),
                 $classed->name => URL::to("class/{$class_id}/group")
             ),
-            'add'=> URL::to("class/{$class_id}/create")
+            'add'=> URL::to("class/{$class_id}/group/create")
         ));
         $this->layout->menu = "class";
 
         $this->layout->content = View::make('classes/groups/create/index', $varView);
+        $this->layout->content->header = "Create Group";
     }
 
-    public function getEdit($class_id)
+    public function getEdit($class_id, $group_id)
     {
-        $classed = DZApi::instance()->call('get', '/class/'.$class_id);
+        $classed = DZApi::instance()->call('get', '/class/'.$class_id.'/group/'.$group_id);
 
         $this->layout->title = 'Create Group';
         $this->layout->header = View::make('layouts/header', array(
             'breadcrumbs'=> array(
-                "class" => URL::to('class'),
+                "Class" => URL::to('class'),
                 $classed->name => URL::to("class/{$class_id}/group")
             ),
-            'add'=> URL::to("class/{$class_id}/create")
+            'add'=> URL::to("class/{$class_id}/group/create")
         ));
-        $this->layout->content = View::make('classes/groups/create/index');
+        $this->layout->content = View::make('classes/groups/create/index', array(
+            'post'=> json_decode(json_encode($classed), true)
+        ));
+        $this->layout->content->header = "Edit Group";
+        $this->layout->content->oldData = $classed;
+
         $this->layout->menu = "class";
+    }
+
+    public function postEdit($class_id, $group_id)
+    {
+        $post = $_POST;
+        $varView = array('post'=> $post);
+        $uploads = null;
+
+        try {
+            $res = DZApi::instance()->call("put", "/class/{$class_id}/group/{$group_id}", $post);
+            if(isset($res->error)){
+                throw new Exception($res->error->message);
+            }
+
+            if(Input::hasFile('video')){
+                $tmp = new UploadTemp(Input::file("video"));
+                $res = DZApi::instance()->call("post", "/class/{$class_id}/group/{$group_id}/editVideo", null, array("video"=> $tmp->getRealPath()));
+                $tmp->deleteTemp();
+
+                if(isset($res->error))
+                {
+                    throw new Exception($res->error->message);
+                }
+            }
+
+            return Redirect::to("/class/{$class_id}/group");
+        }
+        catch (Exception $e) {
+            $varView['error_message'] = $e->getMessage();
+
+            $this->layout->title = "Edit Group";
+            $class = DZApi::instance()->call('get', "/class/{$class_id}");
+            $this->layout->header = View::make('layouts/header', array(
+                'breadcrumbs'=> array(
+                    'Class' => URL::to('class'),
+                    $class->name => URL::to("class/{$class_id}/chapter"),
+                ),
+                'add'=> URL::to("class/{$class_id}/group/create")
+            ));
+            $this->layout->menu = "class";
+
+            $this->layout->content = View::make('classes/groups/create/index', $varView);
+            $classed = DZApi::instance()->call('get', '/class/'.$class_id.'/group/'.$group_id);
+            $this->layout->content->oldData = $classed;
+            $this->layout->content->header = "Edit Group";
+        }
     }
 }

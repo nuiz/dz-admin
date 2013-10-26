@@ -21,7 +21,7 @@
     <legend>{{ $header }}</legend>
     <div class="form-group">
         <label>news name</label>
-        <input type="text" class="form-control" name="name" value="@if(@$post['name']){{ $post['name'] }}@endif">
+        <input type="text" class="form-control" name="name" id="input-name" value="@if(@$post['name']){{ $post['name'] }}@endif">
     </div>
     <div class="form-group field-media">
         <label>ไฟล์แนบ(รูปภาพหรือวีดีโอ)</label>
@@ -46,22 +46,42 @@
     </div>
     <div class="form-group">
         <label>message</label>
-        <textarea class="form-control" name="message">@if(@$post['message']){{ $post['message'] }}@endif</textarea>
+        <textarea class="form-control" name="message" id="input-message">@if(@$post['message']){{ $post['message'] }}@endif</textarea>
     </div>
     <button class="btn btn-primary" type="submit">Submit</button>
+    <button class="btn btn-info pull-right cancle-button">Reset</button>
     @if(@$error_message)
     <div class="alert alert-danger" style="margin-top: 20px;">{{ $error_message }}</div>
     @endif
 </form>
 <script type="text/javascript">
 $(function(){
-    $('.delete-media').click(function(e){
+    var oldMedia = $('.media');
+    $('.field-media').delegate('.delete-media', 'click', function(e){
         e.preventDefault();
-        $('.field-media').html('<input type="hidden" name="deleteMedia" value="yes">');
+        $('.media-block').html('<input type="hidden" name="deleteMedia" value="yes">');
+        $('.field-media').hide();
     });
-    $('.reupload-media').click(function(e){
+    $('.field-media').delegate('.reupload-media', 'click', function(e){
         e.preventDefault();
         $('.media-block').html('<input type="file" class="form-control" name="media">');
+    });
+
+    var oldData = <?php echo isset($oldData)? json_encode($oldData): 'null'; ?>;
+    var inputName = $('#input-name');
+    var inputMessage = $('#input-message');
+    $('.cancle-button').click(function(e){
+        e.preventDefault();
+        if(oldData==null){
+            inputName.val("");
+            inputMessage.val("");
+        }
+        else {
+            inputName.val(oldData.name);
+            inputMessage.val(oldData.message);
+            $('.media-block').html('').append(oldMedia);
+            $('.field-media').show();
+        }
     });
 });
 </script>

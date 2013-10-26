@@ -11,26 +11,26 @@
 <div style="background: white;">
     <table class="table table-bordered">
         <tr>
-            <th>id</th>
+            <th>date</th>
             <th>name</th>
             <th>picture</th>
             <th>message</th>
-            <th>date</th>
             <th>user joined</th>
             <th>edit</th>
             <th>delete</th>
         </tr>
         @foreach($activities as $activity)
         <tr>
-            <td>{{ $activity->id }}</td>
+            <td>{{ $activity->start_time }}</td>
             <td>{{ $activity->name }}</td>
             <td>
                 @if(@$activity->picture->id)
-                <a href="{{ $activity->picture->link }}" class="glyphicon glyphicon-picture"></a>
+                <a href="{{ $activity->picture->link }}" class="html5lightbox" title="{{ $activity->name }}">
+                    <img src="{{ $activity->picture->link }}" class="dz-thumb" />
+                </a>
                 @endif
             </td>
             <td>{{ $activity->message }}</td>
-            <td>{{ $activity->start_time }}</td>
             <td>
                 {{ $activity->user_length }}
             </td>

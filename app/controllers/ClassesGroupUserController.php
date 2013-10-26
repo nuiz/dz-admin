@@ -19,7 +19,7 @@ class ClassesGroupUserController extends BaseController {
         $this->layout->title = 'Class >> Group >> User';
         $this->layout->header = View::make('layouts/header', array(
             'breadcrumbs'=> array(
-                "class" => URL::to('class'),
+                "Class" => URL::to('class'),
                 $classed->name => URL::to("class/{$class_id}/group"),
                 $group->name => URL::to("class/{$class_id}/group/{$group_id}/user")
             ),
@@ -41,7 +41,7 @@ class ClassesGroupUserController extends BaseController {
         $this->layout->title = 'Class >> Group >> Import user';
         $this->layout->header = View::make('layouts/header', array(
             'breadcrumbs'=> array(
-                "class" => URL::to('class'),
+                "Class" => URL::to('class'),
                 $classed->name => URL::to("class/{$class_id}/group"),
                 $group->name => URL::to("class/{$class_id}/group/{$group_id}/user")
             ),

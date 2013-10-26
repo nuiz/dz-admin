@@ -9,23 +9,25 @@
 ?>
 @section('content')
 <div style="background: white;">
-    <table class="table table-bordered">
+    <table class="table table-bordered table-dz">
         <tr>
-            <th>id</th>
             <th>logo</th>
             <th>color</th>
             <th>name</th>
             <th>chapter</th>
+            <th>sort down</th>
+            <th>sort up</th>
             <th>edit</th>
             <th>delete</th>
         </tr>
         @foreach($lessons as $lesson)
-        <tr>
-            <td>{{ $lesson->id }}</td>
+        <tr class="item-sort" item-id="{{ $lesson->id }}">
             <td><img src="{{ $lesson->logo_link }}" height="32"></td>
             <td class="lesson-color">{{ $lesson->color }}</td>
             <td>{{ $lesson->name }}</td>
             <td><a href="{{ URL::to('lesson/'.$lesson->id.'/chapter') }}">{{ $lesson->chapter_length }} chapters</a></td>
+            <td class="text-center"><a href="" class="glyphicon glyphicon-chevron-down sort-down"></a></td>
+            <td class="text-center"><a href="" class="glyphicon glyphicon-chevron-up sort-up"></a></td>
             <td><a href="{{ URL::to('lesson/edit/'.$lesson->id) }}" class="glyphicon glyphicon-edit edit-button"></a></td>
             <td><a href="{{ URL::to('lesson/delete/'.$lesson->id) }}" class="glyphicon glyphicon-remove del-button"></a></td>
         </tr>
@@ -77,6 +79,42 @@ $(function(){
                 tr.remove();
             });
         }, 'json');
+    });
+
+    $('.sort-down').bind('click touchstart', function(e){
+        e.preventDefault();
+        var tr = $(this).closest("tr");
+        var next = tr.next(".item-sort");
+        if(next.size() > 0){
+            next.after(tr);
+            var sortData = [];
+            $('.item-sort').each(function(index, item){
+                sortData.push($(item).attr("item-id"));
+            });
+            $.post('{{ URL::to("lesson/sort") }}', { "sortData": sortData }, function(data){
+                if(typeof data.error != 'undefined'){
+                    alert(data.error.message);
+                }
+            }, 'json');
+        }
+    });
+
+    $('.sort-up').bind('click touchstart', function(e){
+        e.preventDefault();
+        var tr = $(this).closest("tr");
+        var prev = tr.prev(".item-sort");
+        if(prev.size() > 0){
+            prev.before(tr);
+            var sortData = [];
+            $('.item-sort').each(function(index, item){
+                sortData.push($(item).attr("item-id"));
+            });
+            $.post('{{ URL::to("lesson/sort") }}', { "sortData": sortData }, function(data){
+                if(typeof data.error != 'undefined'){
+                    alert(data.error.message);
+                }
+            }, 'json');
+        }
     });
 });
 </script>

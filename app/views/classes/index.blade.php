@@ -11,17 +11,19 @@
 <div style="background: white;">
     <table class="table table-bordered table-dz">
         <tr>
-            <th>id</th>
-            <th>ชื่อคลาสเรียน</th>
-            <th>กลุ่ม</th>
-            <th>แก้ไข</th>
-            <th>ลบ</th>
+            <th>logo</th>
+            <th>color</th>
+            <th>class name</th>
+            <th>group</th>
+            <th>edit</th>
+            <th>delete</th>
         </tr>
         @foreach($classes as $class)
         <tr>
-            <td>{{ $class->id }}</td>
+            <td><img src="{{ $class->logo_link }}" height="32"></td>
+            <td class="class-color">{{ $class->color }}</td>
             <td>{{ $class->name }}</td>
-            <td><a href="{{ URL::to('class/'.$class->id.'/group') }}">{{ $class->group_length }} กลุ่ม</a></td>
+            <td><a href="{{ URL::to('class/'.$class->id.'/group') }}">{{ $class->group_length }} group</a></td>
             <td class="text-center"><a href="{{ URL::to('class/edit/'.$class->id) }}"><i class="glyphicon glyphicon-edit"></i></a></td>
             <td class="text-center"><a href="{{ URL::to('class/delete?id='.$class->id) }}" class="del-button"><i class="glyphicon glyphicon-remove"></i></a></td>
         </tr>
@@ -30,6 +32,14 @@
 </div>
 <script type="text/javascript">
 $(function(){
+    function makeColor()
+    {
+        $('.class-color').each(function(index, el){
+            $(this).css({ background: $(this).text() });
+        });
+    }
+    makeColor();
+
     function disabledTr(tr){
         $(tr).css({ opacity: 0.4 });
         $(tr).data('disabled', true);

@@ -13,7 +13,7 @@ class LessonController extends BaseController {
         $this->layout->title = 'Lesson';
         $this->layout->header = View::make('layouts/header', array(
             'breadcrumbs'=> array(
-                "lesson" => URL::to('lesson')
+                "Lesson" => URL::to('lesson')
             ),
             'add'=> URL::to("lesson/create")
         ));
@@ -28,7 +28,7 @@ class LessonController extends BaseController {
         $this->layout->title = 'Create Lesson';
         $this->layout->header = View::make('layouts/header', array(
             'breadcrumbs'=> array(
-                "lesson" => URL::to('lesson')
+                "Lesson" => URL::to('lesson')
             ),
             'add'=> URL::to("lesson/create")
         ));
@@ -48,7 +48,7 @@ class LessonController extends BaseController {
         $this->layout->title = 'Create Lesson';
         $this->layout->header = View::make('layouts/header', array(
             'breadcrumbs'=> array(
-                "lesson" => URL::to('lesson')
+                "Lesson" => URL::to('lesson')
             ),
             'add'=> URL::to("lesson/create")
         ));
@@ -72,7 +72,7 @@ class LessonController extends BaseController {
         $this->layout->title = 'Edit Lesson';
         $this->layout->header = View::make('layouts/header', array(
             'breadcrumbs'=> array(
-                "lesson" => URL::to('lesson')
+                "Lesson" => URL::to('lesson')
             ),
             'add'=> URL::to("lesson/create")
         ));
@@ -80,6 +80,7 @@ class LessonController extends BaseController {
 
         $this->layout->content = View::make('lessons/create/index', array('post'=> json_decode(json_encode($res), true)));
         $this->layout->content->header = "Edit Lesson";
+        $this->layout->content->oldData = $res;
     }
 
     public function postEdit($id)
@@ -95,7 +96,7 @@ class LessonController extends BaseController {
         $this->layout->title = 'Edit Lesson';
         $this->layout->header = View::make('layouts/header', array(
             'breadcrumbs'=> array(
-                "lesson" => URL::to('lesson')
+                "Lesson" => URL::to('lesson')
             ),
             'add'=> URL::to("lesson/create")
         ));
@@ -103,5 +104,14 @@ class LessonController extends BaseController {
 
         $this->layout->content = View::make('lessons/create/index', $varView);
         $this->layout->content->header = "Edit Lesson";
+
+        $data = $res = DZApi::instance()->call("get", "/lesson/{$id}");
+        $this->layout->content->oldData = $data;
+    }
+
+    public function postSort()
+    {
+        $res = DZApi::instance()->call('post', "/lesson/sort", Input::all());
+        return Response::json($res);
     }
 }

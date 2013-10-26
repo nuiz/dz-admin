@@ -14,15 +14,15 @@
     </div>
     <table class="table table-bordered table-dz" id="user-can-import">
         <tr>
-            <th>id</th>
-            <th>ชื่อ</th>
-            <th>นามสกุล</th>
+            <th>username</th>
+            <th>name</th>
+            <th>surname</th>
             <th>email</th>
-            <th>เพิ่มลงไปในกลุ่ม</th>
+            <th>import</th>
         </tr>
         @foreach($users as $user)
         <tr>
-            <td field_name="id">{{ $user->id }}</td>
+            <td field_name="id">{{ $user->username }}</td>
             <td field_name="first_name">{{ $user->first_name }}</td>
             <td field_name="last_name">{{ $user->last_name }}</td>
             <td field_name="email">{{ $user->email }}</td>

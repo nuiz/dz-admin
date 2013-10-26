@@ -11,7 +11,6 @@
 <div style="background: white;">
     <table class="table table-bordered table-dz">
         <tr>
-            <th>id</th>
             <th>name</th>
             <th>picture or video</th>
             <th>message</th>
@@ -20,13 +19,17 @@
         </tr>
         @foreach($news as $new)
         <tr>
-            <td>{{ $new->id }}</td>
             <td>{{ $new->name }}</td>
             <td>
                 @if(@$new->picture->id)
-                <a href="{{ $new->picture->link }}" class="glyphicon glyphicon-picture"></a>
+                <a href="{{ $new->picture->link }}" class="html5lightbox" title="{{ $new->name }}">
+                    <img src="{{ $new->picture->link }}" class="dz-thumb" />
+                </a>
                 @elseif(@$new->video->id)
-                <a href="{{ $new->video->link }}" class="glyphicon glyphicon-facetime-video"></a>
+                <a href="{{ $new->video->link }}" class="html5lightbox video-thumb" data-width="480" data-height="320" title="{{ $new->name }}">
+                    <span class="glyphicon glyphicon-facetime-video video-icon"></span>
+                    <img src="{{ $new->video->thumb }}" class="dz-thumb" />
+                </a>
                 @endif
             </td>
             <td>{{ nl2br($new->message) }}</td>

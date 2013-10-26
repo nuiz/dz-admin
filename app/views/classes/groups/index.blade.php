@@ -12,18 +12,23 @@
 <div style="background: white;">
     <table class="table table-bordered table-dz">
         <tr>
-            <th>id</th>
             <th>ชื่อกลุ่ม</th>
-            <th>จำนวนคนในกลุ่ม</th>
-            <th>แก้ไข</th>
-            <th>ลบ</th>
+            <th>video</th>
+            <th>user</th>
+            <th>edit</th>
+            <th>delete</th>
         </tr>
         @foreach($groups as $group)
         <tr>
-            <td>{{ $group->id }}</td>
             <td>{{ $group->name }}</td>
-            <td><a href="{{ URL::to('class/'.$classed->id.'/group/'.$group->id.'/user') }}">{{ $group->user_length }} คน</a></td>
-            <td class="text-center"><a class="edit-group-button" href="{{ URL::to('class/'.$classed->id.'/group/'.$group->id.'/edit') }}"><i class="glyphicon glyphicon-edit"></i></a></td>
+            <td>
+                <a href="{{ $group->video->link }}" class="html5lightbox video-thumb" title="{{ $group->name }}">
+                    <span class="glyphicon glyphicon-facetime-video video-icon"></span>
+                    <img src="{{ $group->video->thumb }}" class="dz-thumb" />
+                </a>
+            </td>
+            <td><a href="{{ URL::to('class/'.$classed->id.'/group/'.$group->id.'/user') }}">{{ $group->user_length }} user</a></td>
+            <td class="text-center"><a class="edit-group-button" href="{{ URL::to('class/'.$classed->id.'/group/edit/'.$group->id) }}"><i class="glyphicon glyphicon-edit"></i></a></td>
             <td class="text-center"><a class="delete-group-button": href="{{ URL::to('class/'.$classed->id.'/group/delete?id='.$group->id) }}"><i class="glyphicon glyphicon-remove"></i></a></td>
         </tr>
         @endforeach

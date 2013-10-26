@@ -35,7 +35,7 @@ Route::post('/', function(){
 
     if(!isset($auth->error)){
         DZApi::instance()->setUser($auth->user, $auth->token);
-        return Redirect::action('UserController@getIndex');
+        return Redirect::action('NewsController@getIndex');
     }
 
     return View::make('login');
@@ -57,3 +57,8 @@ Route::controller('class/{class_id}/group', 'ClassesGroupController');
 Route::controller('class', 'ClassesController');
 
 Route::controller('activity', 'ActivityController');
+
+Route::controller('notification', 'NotificationController');
+
+Route::controller("popup", "PopupController");
+Route::controller('setting', "SettingController");

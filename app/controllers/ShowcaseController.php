@@ -11,7 +11,12 @@ class ShowcaseController extends BaseController {
     public function getIndex()
     {
         $this->layout->title = 'Showcase';
-        $this->layout->header = View::make('showcases/header');
+        $this->layout->header = View::make('layouts/header', array(
+            "breadcrumbs"=> array(
+                'Showcase'=> URL::to("showcase")
+            ),
+            "add"=> "javascript:clickAdd();"
+        ));
         $this->layout->menu = "showcase";
 
         $showcases = DZApi::instance()->call('get', '/showcase');
@@ -20,34 +25,18 @@ class ShowcaseController extends BaseController {
 
     public function postIndex()
     {
-        preg_match('#(?<=v=)[a-zA-Z0-9-]+(?=&)|(?<=v\/)[^&\n]+(?=\?)|(?<=v=)[^&\n]+|(?<=youtu.be/)[^&\n]+#', Input::get('youtube_id'), $matches);
-
-        $error_message = false;
-        if(!isset($matches[0])){
-            $error_message = 'youtube link invalid';
-        }
-        else {
-            $youtube_id = $matches[0];
-
-            $attr = Input::all();
-            $attr['youtube_id'] = $youtube_id;
-            $res = DZApi::instance()->call('post', '/showcase', $attr);
-            if(!isset($res->error)){
-                return Redirect::refresh();
-            }
-            $error_message = $res->error->message;
-        }
-
-        $this->layout->menu = "showcase";
-        $this->layout->title = 'Add Showcase';
-        $this->layout->header = 'Add Showcase';
-        $this->layout->content = View::make('showcases/create/index',
-            array('post'=> Input::all(), 'error_message'=> $error_message));
+        return Response::json(DZApi::instance()->call('post', "/showcase", Input::all()));
     }
 
     public function getDelete($id)
     {
         $res = DZApi::instance()->call('delete', '/showcase/'.$id);
+        return Response::json($res);
+    }
+
+    public function postSort()
+    {
+        $res = DZApi::instance()->call('post', "/showcase/sort", Input::all());
         return Response::json($res);
     }
 }

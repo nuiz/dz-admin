@@ -14,7 +14,7 @@ class LessonChapterController extends BaseController {
         $this->layout->title = 'Lesson >> Chapter';
         $this->layout->header = View::make('layouts/header', array(
             'breadcrumbs'=> array(
-                'lesson' => URL::to('lesson'),
+                'Lesson' => URL::to('lesson'),
                 $lesson->name => URL::to("lesson/{$lesson_id}/chapter")
             ),
             'add'=> URL::to("lesson/{$lesson_id}/chapter/create")
@@ -31,7 +31,7 @@ class LessonChapterController extends BaseController {
         $this->layout->title = 'Lesson >> Create Chapter';
         $this->layout->header = View::make('layouts/header', array(
             'breadcrumbs'=> array(
-                'lesson' => URL::to('lesson'),
+                'Lesson' => URL::to('lesson'),
                 $lesson->name => URL::to("lesson/{$lesson_id}/chapter")
             ),
             'add'=> URL::to("lesson/{$lesson_id}/chapter/create")
@@ -70,7 +70,7 @@ class LessonChapterController extends BaseController {
         $lesson = DZApi::instance()->call('get', "/lesson/{$lesson_id}");
         $this->layout->header = View::make('layouts/header', array(
             'breadcrumbs'=> array(
-                'lesson' => URL::to('lesson'),
+                'Lesson' => URL::to('lesson'),
                 $lesson->name => URL::to("lesson/{$lesson_id}/chapter")
             ),
             'add'=> URL::to("lesson/{$lesson_id}/chapter/create")
@@ -85,16 +85,16 @@ class LessonChapterController extends BaseController {
         $data = DZApi::instance()->call("get", "/lesson/{$lesson_id}/chapter/{$id}");
         $this->layout->title = 'Edit Chapter';
 
-
         $lesson = DZApi::instance()->call('get', "/lesson/{$lesson_id}");
         $this->layout->header = View::make('layouts/header', array(
             'breadcrumbs'=> array(
-                'lesson' => URL::to('lesson'),
+                'Lesson' => URL::to('lesson'),
                 $lesson->name => URL::to("lesson/{$lesson_id}/chapter")
             ),
             'add'=> URL::to("lesson/{$lesson_id}/chapter/create")
         ));        $this->layout->content = View::make('lessons/chapters/create/index', array('post'=> json_decode(json_encode($data), true)));
         $this->layout->content->header = "Edit Chapter";
+        $this->layout->content->oldData = $data;
         $this->layout->menu = "lesson";
     }
 
@@ -120,13 +120,16 @@ class LessonChapterController extends BaseController {
             $lesson = DZApi::instance()->call('get', "/lesson/{$lesson_id}");
             $this->layout->header = View::make('layouts/header', array(
                 'breadcrumbs'=> array(
-                    'lesson' => URL::to('lesson'),
+                    'Lesson' => URL::to('lesson'),
                     $lesson->name => URL::to("lesson/{$lesson_id}/chapter")
                 ),
                 'add'=> URL::to("lesson/{$lesson_id}/chapter/create")
             ));
             $this->layout->content = View::make('lessons/chapters/create/index', array('post'=> $_POST, "error_message"=> $e->getMessage()));
             $this->layout->content->header = "Edit Chapter";
+
+            $data = DZApi::instance()->call("get", "/lesson/{$lesson_id}/chapter/{$id}");
+            $this->layout->content->oldData = $data;
             $this->layout->menu = "lesson";
         }
     }
@@ -134,6 +137,12 @@ class LessonChapterController extends BaseController {
     public function getDelete($lesson_id, $id)
     {
         $res = DZApi::instance()->call('delete', '/lesson/'.$lesson_id.'/chapter/'.$id);
+        return Response::json($res);
+    }
+
+    public function postSort($lesson_id)
+    {
+        $res = DZApi::instance()->call('post', "/lesson/{$lesson_id}/chapter/sort", Input::all());
         return Response::json($res);
     }
 }

@@ -13,7 +13,7 @@ class NewsController extends BaseController {
         $this->layout->title = "News";
         $this->layout->header = View::make('layouts/header', array(
             'breadcrumbs'=> array(
-                "news" => URL::to('news'),
+                "Update" => URL::to('news'),
             ),
             'add'=> URL::to("news/create")
         ));
@@ -28,7 +28,7 @@ class NewsController extends BaseController {
         $this->layout->title = 'Create News';
         $this->layout->header = View::make('layouts/header', array(
             'breadcrumbs'=> array(
-                "news" => URL::to('news'),
+                "Update" => URL::to('news'),
             ),
             'add'=> URL::to("news/create")
         ));
@@ -65,7 +65,7 @@ class NewsController extends BaseController {
             $this->layout->title = 'Create News';
             $this->layout->header = View::make('layouts/header', array(
                 'breadcrumbs'=> array(
-                    "news" => URL::to('news'),
+                    "Update" => URL::to('news'),
                 ),
                 'add'=> URL::to("news/create")
             ));
@@ -85,12 +85,13 @@ class NewsController extends BaseController {
         $this->layout->title = 'Edit news';
         $this->layout->header = View::make('layouts/header', array(
             'breadcrumbs'=> array(
-                "news" => URL::to('news'),
+                "Update" => URL::to('news'),
             ),
             'add'=> URL::to("news/create")
         ));
         $this->layout->content = View::make('news/create/index', array('post'=> json_decode(json_encode($newsData), true)));
         $this->layout->content->header = "Edit News";
+        $this->layout->content->oldData = json_decode(json_encode($newsData));
         $this->layout->menu = "news";
     }
 
@@ -114,7 +115,7 @@ class NewsController extends BaseController {
             $this->layout->title = 'Edit news';
             $this->layout->header = View::make('layouts/header', array(
                 'breadcrumbs'=> array(
-                    "news" => URL::to('news'),
+                    "Update" => URL::to('news'),
                 ),
                 'add'=> URL::to("news/create")
             ));

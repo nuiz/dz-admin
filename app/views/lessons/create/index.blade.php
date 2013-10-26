@@ -36,7 +36,7 @@
     <legend>{{ $header }}</legend>
     <div class="form-group">
         <label>name</label>
-        <input type="text" class="form-control" name="name" value="@if(@$post['name']){{ $post['name'] }}@endif">
+        <input type="text" id="input-name" class="form-control" name="name" value="@if(@$post['name']){{ $post['name'] }}@endif">
     </div>
     <div class="form-group">
         <label>color</label>
@@ -101,13 +101,14 @@
         </div>
     </div>
     <button class="btn btn-primary" type="submit">Submit</button>
+    <button class="btn btn-info pull-right cancle-button">Reset</button>
     @if(@$error_message)
     <div class="alert alert-danger" style="margin-top: 20px;">{{ $error_message }}</div>
     @endif
 </form>
 <script type="text/javascript">
 $(function(){
-    $('.color-chose').bind('touchstart click', function(e){
+    $('.color-chose').bind('click', function(e){
         $('.color-list').slideDown();
     });
 
@@ -144,6 +145,28 @@ $(function(){
         var logo = $('input[name="logo"]').val();
         $('.logo-choice[logo="'+logo+'"]').click();
     }
+
+    var oldData = <?php echo isset($oldData)? json_encode($oldData): 'null'; ?>;
+    var inputColor = $('#input-color');
+    var inputLogo = $('#input-logo');
+    var inputName = $('#input-name');
+    $('.cancle-button').click(function(e){
+        e.preventDefault();
+        if(oldData==null){
+            inputColor.val("");
+            inputLogo.val("");
+            inputName.val("");
+        }
+        else {
+            var color = $('input[name="color"]').val();
+            $('.color-choice[color="'+oldData.color+'"]').click();
+
+            var logo = $('input[name="logo"]').val();
+            $('.logo-choice[logo="'+oldData.logo+'"]').click();
+
+            inputName.val(oldData.name);
+        }
+    });
 });
 </script>
 @stop
