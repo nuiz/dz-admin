@@ -13,13 +13,14 @@ class ClassesController extends BaseController {
         $this->layout->title = 'all class';
         $this->layout->header = View::make('layouts/header', array(
             'breadcrumbs'=> array(
+                "Join us" => URL::to('joinus'),
                 'Class'=> URL::to('class')
             ),
             'add'=> URL::to('class/create')
         ));
-        $this->layout->menu = 'class';
 
         $classes = DZApi::instance()->call('get', '/class');
+        $this->layout->menu = 'joinus';
         $this->layout->content = View::make('classes/index', array('classes'=> $classes->data));
     }
 
@@ -28,13 +29,14 @@ class ClassesController extends BaseController {
         $this->layout->title = 'Create Class';
         $this->layout->header = View::make('layouts/header', array(
             'breadcrumbs'=> array(
+                "Join us" => URL::to('joinus'),
                 'Class'=> URL::to('class')
             ),
             'add'=> URL::to('class/create')
         ));
+        $this->layout->menu = "joinus";
         $this->layout->content = View::make('classes/create/index');
         $this->layout->content->headForm = "Create Class";
-        $this->layout->menu = "class";
     }
 
     public function postCreate()
@@ -50,14 +52,15 @@ class ClassesController extends BaseController {
         $this->layout->title = 'Create Class';
         $this->layout->header = View::make('layouts/header', array(
             'breadcrumbs'=> array(
+                "Join us" => URL::to('joinus'),
                 'Class'=> URL::to('class')
             ),
             'add'=> URL::to('class/create')
         ));
 
+        $this->layout->menu = "joinus";
         $this->layout->content = View::make('classes/create/index', $variables);
         $this->layout->content->headForm = 'Create Class';
-        $this->layout->menu = "class";
     }
 
     public function getEdit($class_id){
@@ -68,15 +71,16 @@ class ClassesController extends BaseController {
         $this->layout->title = 'Edit Class';
         $this->layout->header = View::make('layouts/header', array(
             'breadcrumbs'=> array(
+                "Join us" => URL::to('joinus'),
                 'Class'=> URL::to('class')
             ),
             'add'=> URL::to('class/create')
         ));
+        $this->layout->menu = "joinus";
         $this->layout->content = View::make('classes/create/index');
         $this->layout->content->post = $classed;
         $this->layout->content->oldData = $classed;
         $this->layout->content->headForm = 'Edit Class';
-        $this->layout->menu = "class";
     }
 
     public function postEdit($class_id){
@@ -87,17 +91,18 @@ class ClassesController extends BaseController {
         $this->layout->title = 'Edit Class';
         $this->layout->header = View::make('layouts/header', array(
             'breadcrumbs'=> array(
+                "Join us" => URL::to('joinus'),
                 'Class'=> URL::to('class')
             ),
             'add'=> URL::to('class/create')
         ));
+        $this->layout->menu = "joinus";
         $this->layout->content = View::make('classes/create/index');
         $this->layout->content->post = Input::all();
         $this->layout->content->headForm = 'Edit Class';
 
         $classed = DZApi::instance()->call('get', "/class/{$class_id}");
         $this->layout->content->oldData = $classed;
-        $this->layout->menu = "class";
     }
 
     public function getDelete()

@@ -9,9 +9,16 @@
 ?>
 @section('content')
 <div style="background: white;">
-    <form method="post" class="add-showcase-form text-center add-showcase-form" style="padding: 10px; display: none;">
-        <label>youube id</label>
-        <input type="text" name="youtube_id">
+    <form method="post" class="form-inline add-showcase-form text-center add-showcase-form" role="form" style="padding: 10px; display: none;">
+        <div class="form-group">
+            <label>youube id</label>
+            <input type="text" name="youtube_id">
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" name="to_feed" value="true"> post to feed
+            </label>
+        </div>
         <button type="submit" class="btn btn-primary submit-showcase">add</button>
     </form>
     <table class="table table-bordered table-dz">
@@ -357,7 +364,7 @@ $(function(){
             var view_count = video.statistics.viewCount;
             var comment_count = video.statistics.commentCount;
 
-            $.post("", {
+            var dataSend = {
                 "youtube_id": youtube_id,
                 "name": name,
                 "description": description,
@@ -366,7 +373,11 @@ $(function(){
                 "like_count": like_count,
                 "view_count": view_count,
                 "comment_count": comment_count
-            }, function(data){
+            };
+            if($('input[name="to_feed"]', form).is(":checked")){
+                dataSend.to_feed = "true";
+            }
+            $.post("", dataSend, function(data){
                 submitting = false;
                 if(typeof data.error != 'undefined'){
                     alert(data.error.message);

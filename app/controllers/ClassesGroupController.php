@@ -16,14 +16,14 @@ class ClassesGroupController extends BaseController {
         $this->layout->title = 'Group Manager';
         $this->layout->header = View::make('layouts/header', array(
             'breadcrumbs'=> array(
+                "Join us" => URL::to('joinus'),
                 "Class" => URL::to('class'),
                 $classed->name => URL::to("class/{$class_id}/group")
             ),
             'add'=> URL::to("class/{$class_id}/group/create")
         ));
+        $this->layout->menu = 'joinus';
         $this->layout->content = View::make('classes/groups/index', array('classed'=> $classed, 'groups'=> $groups->data));
-
-        $this->layout->menu = "class";
     }
 
     public function getDelete($class_id)
@@ -39,14 +39,15 @@ class ClassesGroupController extends BaseController {
         $this->layout->title = 'Create Group';
         $this->layout->header = View::make('layouts/header', array(
             'breadcrumbs'=> array(
+                "Join us" => URL::to('joinus'),
                 "Class" => URL::to('class'),
                 $classed->name => URL::to("class/{$class_id}/group")
             ),
             'add'=> URL::to("class/{$class_id}/group/create")
         ));
+        $this->layout->menu = 'joinus';
         $this->layout->content = View::make('classes/groups/create/index');
         $this->layout->content->header = "Create Group";
-        $this->layout->menu = "class";
     }
 
     public function postCreate($class_id)
@@ -74,13 +75,13 @@ class ClassesGroupController extends BaseController {
         $classed = DZApi::instance()->call('get', '/class/'.$class_id);
         $this->layout->header = View::make('layouts/header', array(
             'breadcrumbs'=> array(
+                "Join us" => URL::to('joinus'),
                 "Class" => URL::to('class'),
                 $classed->name => URL::to("class/{$class_id}/group")
             ),
             'add'=> URL::to("class/{$class_id}/group/create")
         ));
-        $this->layout->menu = "class";
-
+        $this->layout->menu = 'joinus';
         $this->layout->content = View::make('classes/groups/create/index', $varView);
         $this->layout->content->header = "Create Group";
     }
@@ -92,18 +93,18 @@ class ClassesGroupController extends BaseController {
         $this->layout->title = 'Create Group';
         $this->layout->header = View::make('layouts/header', array(
             'breadcrumbs'=> array(
+                "Join us" => URL::to('joinus'),
                 "Class" => URL::to('class'),
                 $classed->name => URL::to("class/{$class_id}/group")
             ),
             'add'=> URL::to("class/{$class_id}/group/create")
         ));
+        $this->layout->menu = 'joinus';
         $this->layout->content = View::make('classes/groups/create/index', array(
             'post'=> json_decode(json_encode($classed), true)
         ));
         $this->layout->content->header = "Edit Group";
         $this->layout->content->oldData = $classed;
-
-        $this->layout->menu = "class";
     }
 
     public function postEdit($class_id, $group_id)
@@ -138,15 +139,16 @@ class ClassesGroupController extends BaseController {
             $class = DZApi::instance()->call('get', "/class/{$class_id}");
             $this->layout->header = View::make('layouts/header', array(
                 'breadcrumbs'=> array(
+                    "Join us" => URL::to('joinus'),
                     'Class' => URL::to('class'),
                     $class->name => URL::to("class/{$class_id}/chapter"),
                 ),
                 'add'=> URL::to("class/{$class_id}/group/create")
             ));
-            $this->layout->menu = "class";
-
-            $this->layout->content = View::make('classes/groups/create/index', $varView);
             $classed = DZApi::instance()->call('get', '/class/'.$class_id.'/group/'.$group_id);
+
+            $this->layout->menu = 'joinus';
+            $this->layout->content = View::make('classes/groups/create/index', $varView);
             $this->layout->content->oldData = $classed;
             $this->layout->content->header = "Edit Group";
         }

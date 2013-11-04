@@ -9,7 +9,7 @@
 ?>
 @section('content')
 <div style="background: white;">
-    <table class="table table-bordered">
+    <table class="table table-bordered table-dz">
         <tr>
             <th>date</th>
             <th>name</th>

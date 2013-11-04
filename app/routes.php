@@ -41,6 +41,11 @@ Route::post('/', function(){
     return View::make('login');
 });
 
+Route::get('logout', function(){
+    DZApi::instance()->clearUser();
+    return Redirect::to("/");
+});
+
 Route::controller('test', 'TestController');
 
 Route::controller('news', 'NewsController');
@@ -62,3 +67,9 @@ Route::controller('notification', 'NotificationController');
 
 Route::controller("popup", "PopupController");
 Route::controller('setting', "SettingController");
+Route::controller('joinus', "JoinusController");
+
+Route::post("change_password", function(){
+    $res = DZApi::instance()->call("post", "/user/1/change_password", Input::all());
+    return Response::json($res);
+});

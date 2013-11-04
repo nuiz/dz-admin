@@ -13,14 +13,17 @@ class ActivityController extends BaseController {
         $this->layout->title = 'Activity';
         $this->layout->header = View::make('layouts/header', array(
             'breadcrumbs'=> array(
+                "Join us" => URL::to('joinus'),
                 "Activity" => URL::to('activity')
             ),
             'add'=> URL::to("activity/create")
         ));
 
         $res = DZApi::instance()->call('get', '/activity');
-        $this->layout->content = View::make('activities/index', array('activities'=> $res->data));
-        $this->layout->menu = "activity";
+        $this->layout->menu = "joinus";
+        $this->layout->content = View::make("layouts/join_us");
+        $this->layout->content->menu = "activity";
+        $this->layout->content->content = View::make('activities/index', array('activities'=> $res->data));
     }
 
     public function getCreate()
@@ -28,13 +31,18 @@ class ActivityController extends BaseController {
         $this->layout->title = 'Create Activity';
         $this->layout->header = View::make('layouts/header', array(
             'breadcrumbs'=> array(
+                "Join us" => URL::to('joinus'),
                 "Activity" => URL::to('activity')
             ),
             'add'=> URL::to("activity/create")
         ));
 
-        $this->layout->content = View::make('activities/create/index');
-        $this->layout->content->header = "Create Activity";
+        $this->layout->content = View::make("layouts/join_us");
+        $this->layout->content->menu = "joinus";
+        $this->layout->content->content = View::make('activities/create/index');
+        $this->layout->content->content->feed_checkbox = true;
+        $this->layout->content->content->to_feed = Input::has("to_feed");
+        $this->layout->content->content->header = "Create Activity";
         $this->layout->menu = "activity";
     }
 
@@ -57,13 +65,17 @@ class ActivityController extends BaseController {
         $this->layout->title = 'Create Activity';
         $this->layout->header = View::make('layouts/header', array(
             'breadcrumbs'=> array(
+                "Join us" => URL::to('joinus'),
                 "Activity" => URL::to('activity')
             ),
             'add'=> URL::to("activity/create")
         ));
-
-        $this->layout->content = View::make('activities/create/index', $varView);
-        $this->layout->content->header = "Create Activity";
+        $this->layout->content = View::make("layouts/join_us");
+        $this->layout->content->menu = "joinus";
+        $this->layout->content->content = View::make('activities/create/index', $varView);
+        $this->layout->content->content->feed_checkbox = true;
+        $this->layout->content->content->to_feed = Input::has("to_feed");
+        $this->layout->content->content->header = "Create Activity";
         $this->layout->menu = "activity";
 
         if(isset($tmp)){
@@ -85,15 +97,17 @@ class ActivityController extends BaseController {
         $this->layout->title = 'Create Activity';
         $this->layout->header = View::make('layouts/header', array(
             'breadcrumbs'=> array(
+                "Join us" => URL::to('joinus'),
                 "Activity" => URL::to('activity')
             ),
             'add'=> URL::to("activity/create")
         ));
-
-        $this->layout->content = View::make('activities/create/index');
-        $this->layout->content->post = $post;
-        $this->layout->content->oldData = $res;
-        $this->layout->content->header = "Edit Activity";
+        $this->layout->content = View::make("layouts/join_us");
+        $this->layout->content->menu = "joinus";
+        $this->layout->content->content = View::make('activities/create/index');
+        $this->layout->content->content->post = $post;
+        $this->layout->content->content->oldData = $res;
+        $this->layout->content->content->header = "Edit Activity";
         $this->layout->menu = "activity";
 
     }
@@ -118,15 +132,18 @@ class ActivityController extends BaseController {
             $this->layout->title = 'Edit Activity';
             $this->layout->header = View::make('layouts/header', array(
                 'breadcrumbs'=> array(
-                    "activity" => URL::to('activity')
+                    "Join us" => URL::to('joinus'),
+                    "Activity" => URL::to('activity')
                 ),
                 'add'=> URL::to("activity/create")
             ));
-            $this->layout->content = View::make('activities/create/index', array('post'=> $_POST, "error_message"=> $e->getMessage()));
-            $this->layout->content->header = "Edit Activity";
+            $this->layout->content = View::make("layouts/join_us");
+            $this->layout->content->content->menu = "joinus";
+            $this->layout->content->content = View::make('activities/create/index', array('post'=> $_POST, "error_message"=> $e->getMessage()));
+            $this->layout->content->content->header = "Edit Activity";
 
             $oldData = DZApi::instance()->call("get", "/activity/".$id);
-            $this->layout->content->oldData = $oldData;
+            $this->layout->content->content->oldData = $oldData;
             $this->layout->menu = "activity";
         }
     }

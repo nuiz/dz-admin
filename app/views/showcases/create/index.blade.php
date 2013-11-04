@@ -24,7 +24,14 @@
         value="{{ $post['youtube_id'] }}"
     @endif
     >
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" name="to_feed" value="true"
+                <?php if(isset($post['to_feed']) && $post['to_feed']=="true"){ echo "checked"; }?>> post to feed
+        </label>
+    </div>
     <button type="submit" class="btn btn-primary">add</button>
+    <a class="btn btn-info pull-right" href="javascript:history.back();">Cancel</a>
     @if(@$error_message)
         <div class="alert alert-danger">{{ $error_message }}</div>
     @endif

@@ -108,8 +108,8 @@ class DZApi {
 
     public function clearUser()
     {
-        \Session::remove('DZApi.user');
-        \Session::remove('DZApi.token');
+        \Session::forget('DZApi.user');
+        \Session::forget('DZApi.token');
     }
 
     public function getUser()

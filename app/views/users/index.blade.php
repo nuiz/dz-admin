@@ -61,6 +61,118 @@
         <input type="button" class="btn btn-primary upgrade-submit" value="upgrade">
     </div>
 </script>
+<style type="text/css">
+.setting-main-menu {
+    position: absolute; height: 44px; width: 44px; top: 0; right: 0;
+}
+.setting-main-menu.active {
+    border: solid white;
+    border-width: 1px 1px 0 1px;
+}
+
+.setting-menu {
+    top: 43px;
+    right: 0;
+    padding: 4px 6px;
+    background: #FFAB33;
+    position: absolute;
+    width: 135px;
+    font-size: 14px;
+    z-index: 10;
+    border-width: 0 1px 1px 1px;
+    border-style: solid;
+    border-color: rgb(230, 199, 199);
+    display: none;
+
+    line-height: 36px;
+}
+.setting-menu .setting-list {
+    display: block;
+}
+.setting-menu .setting-list:hover {
+    text-decoration: none;
+    background: #EEEEEE;
+    color: black;
+}
+.setting-menu .setting-list:not(:first-child) {
+    border-top: 1px solid white;
+}
+.setting-main-menu.active .setting-menu {
+    display: block;
+    border: solid white;
+    border-width: 1px 1px 1px 1px;
+}
+
+
+/**************** change password block **************/
+.change-password-bg {
+    background: rgba(0,0,0,0.4);
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0; left: 0;
+}
+
+.change-password-block {
+    background: white;
+    width: 400px;
+    height: auto;
+    position: absolute;
+    top: 50%; left: 50%;
+    margin-top: -200px;
+    margin-left: -200px;
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 4px;
+}
+</style>
+<script type="text/template" class="template-setting">
+    <div class="setting-main-menu">
+        <a href="<?php echo URL::to("logout");?>" class="glyphicon glyphicon-cog setting-button"></a>
+        <div class="setting-menu">
+            <a href="" class="setting-list change-password-button">Change Password</a>
+            <a href="<?php echo URL::to("logout");?>" class="setting-list">Logout</a>
+        </div>
+    </div>
+</script>
+<script type="text/template" class="change-password-template">
+    <div class="change-password-bg">
+        <div class="change-password-block">
+            <form class="form-horizontal" role="form">
+                <fieldset>
+                    <legend class="text-center">Change Password</legend>
+                    <div class="form-group">
+                        <label class="col-sm-5 control-label">Old password</label>
+                        <div class="col-sm-7">
+                            <input class="form-control" type="password" name="old_password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-5 control-label">New password</label>
+                        <div class="col-sm-7">
+                            <input class="form-control" type="password" name="new_password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-5 control-label">Repeat password</label>
+                        <div class="col-sm-7">
+                            <input class="form-control" type="password" name="repeat_password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-5 control-label"></label>
+                        <div class="col-sm-7">
+                            <button class="btn btn-primary chage-password-done pull-left">Done</button>
+                            <button class="btn btn-primary chage-password-cancel pull-right">Cancel</button>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</script>
 <script type="text/javascript">
 $(function(){
     function disabledTr(tr){
@@ -156,7 +268,68 @@ $(function(){
     });
 
     $('body').nodoubletapzoom();
+
+    var settingBlock = $($('.template-setting').html());
+    $('.container .header').append(settingBlock);
+
+    $('.setting-button', settingBlock).click(function(e){
+        e.preventDefault();
+        $(settingBlock).toggleClass('active');
+    });
+
+    var changePasswordBlock = $($('.change-password-template').html());
+    changePasswordBlock.click(function(e){
+        e.preventDefault();
+        if(this == e.target){
+            changePasswordBlock.hide();
+        }
+    });
+    var disabled = false;
+    function disabledChange(){
+        $('input, button', changePasswordBlock).prop('disabled', true);
+        disabled = true;
+    }
+    function enabledChange(){
+        $('input, button', changePasswordBlock).prop('disabled', false);
+        disabled = false;
+    }
+    $('.chage-password-done', changePasswordBlock).click(function(e){
+        e.preventDefault();
+        if(disabled){
+            return;
+        }
+        var srl = $('form', changePasswordBlock).serializeArray();
+        var send = {};
+        for(var i in srl){
+            send[srl[i].name] = srl[i].value;
+        }
+        if(send.new_password!=send.repeat_password){
+            alert('new password and repeat password not match');
+            return;
+        }
+        disabledChange();
+        $.post("<?php echo URL::to("change_password");?>", send, function(data){
+            if(typeof data.error != "undefined"){
+                alert(data.error.message);
+            }
+            else {
+                alert("Change password success");
+                changePasswordBlock.hide();
+            }
+            enabledChange();
+        }, "json");
+    });
+    $('.chage-password-cancel', changePasswordBlock).click(function(e){
+        e.preventDefault();
+        changePasswordBlock.hide();
+    });
+    $('.change-password-button').click(function(e){
+        e.preventDefault();
+        changePasswordBlock.appendTo('body');
+        changePasswordBlock.show();
+        $('input', changePasswordBlock).val('');
+        $(settingBlock).removeClass('active');
+    });
 });
 </script>
-
 @stop

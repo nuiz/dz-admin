@@ -41,7 +41,7 @@
         <textarea class="form-control" id="input-description" name="description">@if(@$post['description']){{ $post['description'] }}@endif</textarea>
     </div>
     <button class="btn btn-primary" type="submit">Submit</button>
-    <button class="btn btn-info pull-right cancle-button">Reset</button>
+    <a class="btn btn-info pull-right" href="javascript:history.back();">Cancel</a>
     @if(@$error_message)
     <div class="alert alert-danger" style="margin-top: 20px;">{{ $error_message }}</div>
     @endif

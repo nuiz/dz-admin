@@ -46,8 +46,13 @@
         <label>message</label>
         <textarea type="text" class="form-control" id="input-message" name="message">@if(@$post['message']){{ $post['message'] }}@endif</textarea>
     </div>
+    @if(@$feed_checkbox)
+    <div class="checkbox">
+        <label><input type="checkbox" name="to_feed" value="true" @if($to_feed) "checked" @endif> feed to update</label>
+    </div>
+    @endif
     <button class="btn btn-primary" type="submit">Submit</button>
-    <button class="btn btn-info pull-right cancle-button">Reset</button>
+    <a class="btn btn-info pull-right" href="javascript:history.back();">Cancel</a>
     @if(@$error_message)
     <div class="alert alert-danger" style="margin-top: 20px;">{{ $error_message }}</div>
     @endif

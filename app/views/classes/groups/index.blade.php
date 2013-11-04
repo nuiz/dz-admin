@@ -8,7 +8,6 @@
  */
 ?>
 @section('content')
-
 <div style="background: white;">
     <table class="table table-bordered table-dz">
         <tr>

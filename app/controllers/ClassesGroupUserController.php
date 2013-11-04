@@ -15,8 +15,7 @@ class ClassesGroupUserController extends BaseController {
 
         $result = DZApi::instance()->call('get', "/class/{$class_id}/group/{$group_id}/user", array('import'=> 'false'));
 
-        $this->layout->menu = "class";
-        $this->layout->title = 'Class >> Group >> User';
+        $this->layout->title = 'User';
         $this->layout->header = View::make('layouts/header', array(
             'breadcrumbs'=> array(
                 "Class" => URL::to('class'),
@@ -25,7 +24,8 @@ class ClassesGroupUserController extends BaseController {
             ),
             'add'=> URL::to("class/{$class_id}/group/{$group_id}/user/import")
         ));
-        $this->layout->content = View::make('classes/groups/users/index', array(
+        $this->layout->menu = 'joinus';
+        $this->layout->content= View::make('classes/groups/users/index', array(
             'users'=> $result->data,
             'classed'=> $classed,
             'group'=> $group
@@ -37,8 +37,7 @@ class ClassesGroupUserController extends BaseController {
         $classed = DZApi::instance()->call('get', "/class/{$class_id}");
         $group = DZApi::instance()->call('get', "/class/{$class_id}/group/{$group_id}");
 
-        $this->layout->menu = "class";
-        $this->layout->title = 'Class >> Group >> Import user';
+        $this->layout->title = 'Import user';
         $this->layout->header = View::make('layouts/header', array(
             'breadcrumbs'=> array(
                 "Class" => URL::to('class'),
@@ -49,6 +48,7 @@ class ClassesGroupUserController extends BaseController {
         ));
 
         $users = DZApi::instance()->call('get', "/class/{$class_id}/group/{$group_id}/user", array("import"=> "true"));
+        $this->layout->menu = 'joinus';
         $this->layout->content = View::make('classes/groups/users/imports/index', array(
             'users'=> $users->data,
             'classed'=> $classed,
