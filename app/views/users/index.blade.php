@@ -3,8 +3,9 @@
     <table class="table table-bordered table-dz">
         <tr>
             <th></th>
+            <th></th>
+            <th>username</th>
             <th>name</th>
-            <th>surname</th>
             <th>email</th>
             <th>group</th>
             <th>type</th>
@@ -16,8 +17,9 @@
         <tr>
             <?php $i++;?>
             <td>{{ $i }}</td>
-            <td>{{ $user->first_name }}</td>
-            <td>{{ $user->last_name }}</td>
+            <td><img src="http://61.19.147.72/api/user/{{ $user->id }}/picture" width="32" height="32"></td>
+            <td><a href="<?php echo URL::to("user/detail/{$user->id}");?>">{{ $user->username }}</a></td>
+            <td><a href="<?php echo URL::to("user/detail/{$user->id}");?>">{{ $user->first_name }} {{ $user->last_name }}</a></td>
             <td>{{ $user->email }}</td>
             <td>
                 <?php foreach($user->groups->data as $group){ ?>

@@ -13,6 +13,8 @@
         <tr>
             <th>ชื่อกลุ่ม</th>
             <th>video</th>
+            <th>start</th>
+            <th>expire</th>
             <th>user</th>
             <th>edit</th>
             <th>delete</th>
@@ -26,9 +28,11 @@
                     <img src="{{ $group->video->thumb }}" class="dz-thumb" />
                 </a>
             </td>
+            <td><?php $dateTime = new DateTime($group->group_week->date_start); echo $dateTime->format("Y F d");?></td>
+            <td><?php $dateTime = new DateTime($group->group_week->date_end); echo $dateTime->format("Y F d");?></td>
             <td><a href="{{ URL::to('class/'.$classed->id.'/group/'.$group->id.'/user') }}">{{ $group->user_length }} user</a></td>
             <td class="text-center"><a class="edit-group-button" href="{{ URL::to('class/'.$classed->id.'/group/edit/'.$group->id) }}"><i class="glyphicon glyphicon-edit"></i></a></td>
-            <td class="text-center"><a class="delete-group-button": href="{{ URL::to('class/'.$classed->id.'/group/delete?id='.$group->id) }}"><i class="glyphicon glyphicon-remove"></i></a></td>
+            <td class="text-center"><a class="delete-group-button" href="{{ URL::to('class/'.$classed->id.'/group/delete?id='.$group->id) }}"><i class="glyphicon glyphicon-remove"></i></a></td>
         </tr>
         @endforeach
     </table>

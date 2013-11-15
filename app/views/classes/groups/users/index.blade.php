@@ -22,7 +22,7 @@
             <td>{{ $user->username }}</td>
             <td>{{ $user->first_name }}</td>
             <td>{{ $user->last_name }}</td>
-            <td>{{ $user->email }}</td>
+            <td><a href="<?php echo URL::to("user/detail/{$user->id}");?>">{{ $user->email }}</a></td>
             <td><a class="remove-user-button glyphicon glyphicon-remove" href="{{ URL::to('class/'.$classed->id.'/group/'.$group->id.'/user/remove/'.$user->id) }}"></a></td>
         </tr>
         @endforeach

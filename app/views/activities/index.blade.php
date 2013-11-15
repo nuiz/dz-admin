@@ -16,6 +16,7 @@
             <th>picture</th>
             <th>message</th>
             <th>user joined</th>
+            <th>comment</th>
             <th>edit</th>
             <th>delete</th>
         </tr>
@@ -34,6 +35,7 @@
             <td>
                 {{ $activity->user_length }}
             </td>
+            <td><a href="<?php echo URL::to("activity/{$activity->id}/comment");?>">{{ $activity->comment->length }}</a></td>
             <td><a href="{{ URL::to('activity/edit/'.$activity->id) }}" class="glyphicon glyphicon-edit edit-button"></a></td>
             <td><a href="{{ URL::to('activity/delete/'.$activity->id) }}" class="glyphicon glyphicon-remove del-button"></a></td>
         </tr>

@@ -19,13 +19,41 @@ class ShowcaseController extends BaseController {
         ));
         $this->layout->menu = "showcase";
 
-        $showcases = DZApi::instance()->call('get', '/showcase');
+        $showcases = DZApi::instance()->call('get', '/showcase?fields=like,comment');
         $this->layout->content = View::make('showcases/index', array('showcases'=> $showcases->data));
     }
 
-    public function postIndex()
+    public function getCreate()
     {
-        return Response::json(DZApi::instance()->call('post', "/showcase", Input::all()));
+        $this->layout->title = 'Showcase';
+        $this->layout->header = View::make('layouts/header', array(
+            "breadcrumbs"=> array(
+                'Showcase'=> URL::to("showcase")
+            ),
+            "add"=> "javascript:clickAdd();"
+        ));
+        $this->layout->menu = "showcase";
+        $this->layout->content = View::make('showcases/create/index');
+        $this->layout->content->header = "Create showcase";
+    }
+
+    public function postCreate(){
+        $json = DZApi::instance()->call('post', "/showcase", Input::all());
+        if(!isset($json->error)){
+            return Redirect::to("showcase");
+        }
+        $this->layout->title = 'Showcase';
+        $this->layout->header = View::make('layouts/header', array(
+            "breadcrumbs"=> array(
+                'Showcase'=> URL::to("showcase")
+            ),
+            "add"=> "javascript:clickAdd();"
+        ));
+        $this->layout->menu = "showcase";
+        $this->layout->content = View::make('showcases/create/index');
+        $this->layout->content->header = "Create showcase";
+        $this->layout->content->post = Input::all();
+        $this->layout->content->error_message = $json->error->message;
     }
 
     public function getDelete($id)

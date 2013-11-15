@@ -50,4 +50,17 @@ class UserController extends BaseController {
         $response = DZApi::instance()->call('delete', '/user/'.$id);
         return Response::json($response);
     }
+
+    public function getDetail($id){
+        $this->layout->title = 'User Detail';
+        $this->layout->header = View::make('layouts/header', array(
+            "breadcrumbs"=> array(
+                "User" => URL::to("user")
+            )
+        ));
+        $this->layout->menu = "user";
+
+        $user = DZApi::instance()->call('get', '/user/'.$id);
+        $this->layout->content = View::make('users/detail', array('user'=> $user));
+    }
 }

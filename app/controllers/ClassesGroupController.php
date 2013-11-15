@@ -11,7 +11,7 @@ class ClassesGroupController extends BaseController {
     public function getIndex($class_id)
     {
         $classed = DZApi::instance()->call('get', '/class/'.$class_id);
-        $groups = DZApi::instance()->call('get', '/class/'.$class_id.'/group');
+        $groups = DZApi::instance()->call('get', '/class/'.$class_id.'/group'.'?fields=group_week');
 
         $this->layout->title = 'Group Manager';
         $this->layout->header = View::make('layouts/header', array(
@@ -60,7 +60,10 @@ class ClassesGroupController extends BaseController {
             $uploads = array('video'=> $tmp->getRealPath());
         }
 
-        $response = DZApi::instance()->call("post", "/class/{$class_id}/group", $_POST, $uploads);
+        $sendInput = array();
+        $this->http_build_query_for_curl($_POST, $sendInput);
+
+        $response = DZApi::instance()->call("post", "/class/{$class_id}/group", $sendInput, $uploads);
         if(isset($tmp))
             $tmp->deleteTemp();
 
@@ -69,6 +72,7 @@ class ClassesGroupController extends BaseController {
             return Redirect::to("class/{$class_id}/group");
         }
         $varView['error_message'] = $response->error->message;
+        $varView['oldData'] = $_POST;
 
         $this->layout->title = 'Create Group';
 
@@ -83,28 +87,32 @@ class ClassesGroupController extends BaseController {
         ));
         $this->layout->menu = 'joinus';
         $this->layout->content = View::make('classes/groups/create/index', $varView);
+        $this->layout->content->post = $_POST;
         $this->layout->content->header = "Create Group";
     }
 
     public function getEdit($class_id, $group_id)
     {
-        $classed = DZApi::instance()->call('get', '/class/'.$class_id.'/group/'.$group_id);
+        $group = DZApi::instance()->call('get', '/class/'.$class_id.'/group/'.$group_id.'?fields=group_week');
+        $study = DZApi::instance()->call('get', '/group/'.$group_id.'/study');
 
         $this->layout->title = 'Create Group';
         $this->layout->header = View::make('layouts/header', array(
             'breadcrumbs'=> array(
                 "Join us" => URL::to('joinus'),
                 "Class" => URL::to('class'),
-                $classed->name => URL::to("class/{$class_id}/group")
+                $group->name => URL::to("class/{$class_id}/group/".$group->id)
             ),
             'add'=> URL::to("class/{$class_id}/group/create")
         ));
         $this->layout->menu = 'joinus';
         $this->layout->content = View::make('classes/groups/create/index', array(
-            'post'=> json_decode(json_encode($classed), true)
+            'post'=> json_decode(json_encode($group), true)
         ));
         $this->layout->content->header = "Edit Group";
-        $this->layout->content->oldData = $classed;
+        $bufferStudy = json_decode(json_encode($study), true);
+        $this->layout->content->study = $bufferStudy['data'];
+        $this->layout->content->oldData = json_decode(json_encode($group), true);
     }
 
     public function postEdit($class_id, $group_id)
@@ -145,11 +153,14 @@ class ClassesGroupController extends BaseController {
                 ),
                 'add'=> URL::to("class/{$class_id}/group/create")
             ));
-            $classed = DZApi::instance()->call('get', '/class/'.$class_id.'/group/'.$group_id);
+            $classed = DZApi::instance()->call('get', '/class/'.$class_id.'/group/'.$group_id.'?fields=group_week');
+            $study = DZApi::instance()->call('get', '/group/'.$group_id.'/study');
 
             $this->layout->menu = 'joinus';
             $this->layout->content = View::make('classes/groups/create/index', $varView);
             $this->layout->content->oldData = $classed;
+            $bufferStudy = json_decode(json_encode($study), true);
+            $this->layout->content->study = $bufferStudy['data'];
             $this->layout->content->header = "Edit Group";
         }
     }

@@ -25,7 +25,7 @@
             <td field_name="id">{{ $user->username }}</td>
             <td field_name="first_name">{{ $user->first_name }}</td>
             <td field_name="last_name">{{ $user->last_name }}</td>
-            <td field_name="email">{{ $user->email }}</td>
+            <td field_name="email"><a href="<?php echo URL::to("user/detail/{$user->id}");?>">{{ $user->email }}</a></td>
             <td class="text-center"><a href="{{ URL::to('class/'.$classed->id.'/group/'.$group->id.'/user/import/'.$user->id) }}" class="glyphicon glyphicon-save import-button"></a></td>
         </tr>
         @endforeach

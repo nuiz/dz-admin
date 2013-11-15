@@ -19,7 +19,7 @@ class ActivityController extends BaseController {
             'add'=> URL::to("activity/create")
         ));
 
-        $res = DZApi::instance()->call('get', '/activity');
+        $res = DZApi::instance()->call('get', '/activity?fields=like,comment');
         $this->layout->menu = "joinus";
         $this->layout->content = View::make("layouts/join_us");
         $this->layout->content->menu = "activity";

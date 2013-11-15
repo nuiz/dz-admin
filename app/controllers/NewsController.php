@@ -19,7 +19,7 @@ class NewsController extends BaseController {
         ));
         $this->layout->menu = "news";
 
-        $news = DZApi::instance()->call('get', '/news');
+        $news = DZApi::instance()->call('get', '/news?fields=like,comment');
         $this->layout->content = View::make('news/index', array('news'=> $news->data));
     }
 

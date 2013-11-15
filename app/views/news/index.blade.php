@@ -14,6 +14,7 @@
             <th>name</th>
             <th>picture or video</th>
             <th>message</th>
+            <th>comment</th>
             <th>edit</th>
             <th>delete</th>
         </tr>
@@ -33,6 +34,7 @@
                 @endif
             </td>
             <td>{{ nl2br($new->message) }}</td>
+            <td><a href="<?php echo URL::to("news/{$new->id}/comment");?>">{{ $new->comment->length }}</a></td>
             <td><a class="glyphicon glyphicon-edit" href="{{ URL::to('news/edit/'.$new->id) }}"></a></td>
             <td><a class="glyphicon glyphicon-remove action-remove" href="{{ URL::to('news/delete/'.$new->id) }}"></a></td>
         </tr>
